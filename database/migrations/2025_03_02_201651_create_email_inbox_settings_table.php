@@ -11,25 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('email_settings', function (Blueprint $table) {
+        Schema::create('email_inbox_settings', function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
-            $table->string('type');
-            $table->string('host');
-            $table->integer('port');
-            $table->string('encryption');
-            $table->boolean('validate_cert')->default(false);
-            $table->string('username');
-            $table->string('password');
-            $table->string('protocol');
-            $table->boolean('active')->default(false);
+            $table->string('read_from_inbox_name');
+            $table->boolean('auto_set_is_seen')->default(false);
+            $table->foreignId('email_setting_id')
+                ->nullable()
+                ->constrained('email_settings')
+                ->nullOnDelete();
 
             $table->foreignId('created_by')
                 ->nullable()
                 ->constrained('users')
                 ->nullOnDelete();
-
             $table->foreignId('updated_by')
                 ->nullable()
                 ->constrained('users')
@@ -44,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('email_settings');
+        Schema::dropIfExists('email_inbox_settings');
     }
 };
