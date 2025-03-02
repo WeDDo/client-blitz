@@ -26,7 +26,7 @@ class AuthController extends Controller
             'main' => [
                 'translate' => $this->loginTranslate,
             ]
-        ]);
+        ])->with('error', 'Garaž');
     }
 
     public function login(LoginRequest $request): RedirectResponse
@@ -49,12 +49,12 @@ class AuthController extends Controller
     {
         $this->authService->register($request->validated());
 
-        return redirect()->route('login');
+        return redirect()->route('dashboard')->with('success', 'Registration successful.');
     }
 
     public function logout(): RedirectResponse
     {
         auth()->logout();
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'Logged out.');
     }
 }

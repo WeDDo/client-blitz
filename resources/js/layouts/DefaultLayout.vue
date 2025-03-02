@@ -38,6 +38,13 @@ const items = computed(() => [
         },
     },
     {
+        label: translate('modules.nav.dashboard'),
+        icon: 'pi pi-home',
+        command: () => {
+            router.get(route('dashboard'));
+        },
+    },
+    {
         label: translate('modules.nav.login'),
         icon: 'pi pi-user',
         command: () => {
@@ -52,24 +59,10 @@ const items = computed(() => [
         },
     },
     {
-        label: translate('modules.nav.files'),
-        icon: 'pi pi-folder',
+        label: translate('modules.nav.logout'),
+        icon: 'pi pi-plus',
         command: () => {
-            router.get(route('files.index'));
-        },
-    },
-    {
-        label: translate('modules.nav.ripper'),
-        icon: 'pi pi-wave-pulse',
-        command: () => {
-            router.get(route('fileripper.index'));
-        },
-    },
-    {
-        label: translate('modules.nav.favorites'),
-        icon: 'pi pi-star',
-        command: () => {
-            router.get(route('files.index', {path: 'favorites'}));
+            router.get(route('auth.logout'));
         },
     },
 ]);
@@ -153,7 +146,7 @@ onUnmounted(() => {
         <div class="container mx-auto p-4 py-0">
             <div
                 v-if="showSuccess"
-                class="bg-green-200 text-green-700 p-3 px-4 rounded mb-4 flex justify-between"
+                class="bg-green-200 text-green-700 p-3 px-4 rounded flex justify-between"
             >
                 <div>{{ $page?.props?.flash?.success }}</div>
                 <div @click="showSuccess = false">
@@ -163,7 +156,7 @@ onUnmounted(() => {
 
             <div
                 v-if="showError"
-                class="bg-red-200 px-6 text-red-700 p-2 rounded mb-4 flex justify-between"
+                class="bg-red-200 px-6 text-red-700 p-2 rounded flex justify-between"
             >
                 <div>{{ $page?.props?.flash?.error }}</div>
                 <div @click="showError = false">

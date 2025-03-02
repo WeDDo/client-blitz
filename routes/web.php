@@ -25,7 +25,14 @@ Route::get('registration', [AuthController::class, 'registrationShow'])
 Route::post('registration', [AuthController::class, 'registration'])
     ->name('auth.registration');
 
+Route::middleware('auth.check')->group(function () {
+    Route::get('logout', [AuthController::class, 'logout'])
+        ->name('auth.logout');
 
+    Route::get('dashboard', function () {
+        return inertia('Dashboard');
+    })->name('dashboard');
+});
 //Route::get('files', [FileController::class, 'index'])
 //    ->name('files.index');
 //Route::delete('files/mass-delete', [FileController::class, 'massDelete'])
