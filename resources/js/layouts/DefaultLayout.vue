@@ -119,12 +119,7 @@ const locale = ref({
 });
 
 const setLocale = () => {
-    localStorage.setItem('user_locale', locale.value);
-
-    locale.value = {
-        code: locale.value.code,
-        name: translate(`app.locale.locales.${locale.value.code}`)
-    };
+    localStorage.setItem('user_locale', locale.value.code);
 
     router.post(route('set-locale'), {locale: locale.value.code}, {
         preserveState: true,
