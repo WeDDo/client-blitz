@@ -92,10 +92,11 @@ pinia.use(piniaPluginPersistedstate);
 
 createInertiaApp({
     resolve: name => {
-        const pages = import.meta.glob('./Pages/**/*.vue', {eager: true})
-        let page = pages[`./Pages/${name}.vue`]
+        console.log('name', name)
+        const pages = import.meta.glob('./pages/**/*.vue', {eager: true})
+        let page = pages[`./pages/${name}.vue`]
         page.default.layout = DefaultLayout;
-        return pages[`./Pages/${name}.vue`]
+        return pages[`./pages/${name}.vue`]
     },
     setup({el, App, props, plugin}) {
         createApp({render: () => h(App, props)})

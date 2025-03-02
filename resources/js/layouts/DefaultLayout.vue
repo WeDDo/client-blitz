@@ -7,7 +7,7 @@ import {onUnmounted} from "vue";
 import {watchEffect} from "vue";
 import {ref} from "vue";
 import {route} from "ziggy-js";
-import MainSelect from "../Components/Main/MainSelect.vue";
+import MainSelect from "../components/main/MainSelect.vue";
 import {useTranslation} from "../composables/useTranslation.js";
 
 const page = usePage();
@@ -16,16 +16,16 @@ const lastDownloadedFileEvent = ref();
 const isVisible = ref(false);
 let timeoutId = null;
 
-Echo.channel('ripper')
-    .listen('.GlobalNewFileEvent', (event) => {
-        lastDownloadedFileEvent.value = event;
-        isVisible.value = true;
-
-        if (timeoutId) clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-            isVisible.value = false;
-        }, 10000);
-    });
+// Echo.channel('ripper')
+//     .listen('.GlobalNewFileEvent', (event) => {
+//         lastDownloadedFileEvent.value = event;
+//         isVisible.value = true;
+//
+//         if (timeoutId) clearTimeout(timeoutId);
+//         timeoutId = setTimeout(() => {
+//             isVisible.value = false;
+//         }, 10000);
+//     });
 
 const {translate} = useTranslation();
 
@@ -35,6 +35,20 @@ const items = computed(() => [
         icon: 'pi pi-home',
         command: () => {
             router.get(route('home'));
+        },
+    },
+    {
+        label: translate('modules.nav.login'),
+        icon: 'pi pi-user',
+        command: () => {
+            router.get(route('login'));
+        },
+    },
+    {
+        label: translate('modules.nav.registration'),
+        icon: 'pi pi-plus',
+        command: () => {
+            router.get(route('registration'));
         },
     },
     {

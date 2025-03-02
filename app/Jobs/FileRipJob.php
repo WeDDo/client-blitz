@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Services\FileRipper;
+use App\Services\Auth\FileRipper;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 

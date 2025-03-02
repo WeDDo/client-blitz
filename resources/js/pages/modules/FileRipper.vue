@@ -43,8 +43,8 @@ import { ref } from "vue";
 import * as yup from "yup";
 import { router, usePage } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
-import MainInputText from "../../Components/Main/MainInputText.vue";
-import MainMultiSelect from "../../Components/Main/MainMultiSelect.vue";
+import MainInputText from "../../components/main/MainInputText.vue";
+import MainMultiSelect from "../../components/main/MainMultiSelect.vue";
 import {useTranslation} from "../../composables/useTranslation.js";
 const page = usePage();
 
