@@ -3,6 +3,8 @@ import '../css/app.css';
 // import {Form} from "@primevue/forms";
 import {definePreset} from "@primevue/themes";
 import {createPinia} from "pinia";
+import {Toast} from "primevue";
+import {ToastService} from "primevue";
 import {Badge} from "primevue";
 import {Ripple} from "primevue";
 import {Tooltip} from "primevue";
@@ -103,6 +105,7 @@ createInertiaApp({
         createApp({render: () => h(App, props)})
             .use(plugin)
             .use(pinia)
+            .use(ToastService)
             .use(ZiggyVue, Ziggy)
             .use(PrimeVue, {
                 theme: {
@@ -130,6 +133,7 @@ createInertiaApp({
             .component('Select', Select)
             .component('Badge', Badge)
             .component('Card', Card)
+            .component('Toast', Toast)
             .directive('tooltip', Tooltip)
             .directive('ripple', Ripple)
             .mount(el)

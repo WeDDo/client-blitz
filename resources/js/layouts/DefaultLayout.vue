@@ -1,6 +1,8 @@
 <script setup>
 import {usePage} from "@inertiajs/vue3";
 import {router} from "@inertiajs/vue3";
+import {useToast} from "primevue";
+import {watch} from "vue";
 import {computed} from "vue";
 import {onMounted} from "vue";
 import {onUnmounted} from "vue";
@@ -11,6 +13,7 @@ import MainSelect from "../components/main/MainSelect.vue";
 import {useTranslation} from "../composables/useTranslation.js";
 
 const page = usePage();
+const toast = useToast();
 
 const lastDownloadedFileEvent = ref();
 const isVisible = ref(false);
@@ -64,6 +67,40 @@ const items = computed(() => [
         visible: !authenticated.value,
     },
     {
+        label: translate('modules.nav.emails'),
+        icon: 'pi pi-plus',
+        items: [
+            {
+                label: translate('modules.nav.personal_inboxes'),
+                icon: 'pi pi-plus',
+                command: () => {
+                    router.get(route('auth.logout'));
+                },
+            },
+            {
+                label: translate('modules.nav.tickets'),
+                icon: 'pi pi-plus',
+                command: () => {
+                    router.get(route('auth.logout'));
+                },
+            },
+            {
+                label: translate('modules.nav.email_inbox_settings'),
+                icon: 'pi pi-plus',
+                command: () => {
+                    router.get(route('auth.logout'));
+                },
+            },
+            {
+                label: translate('modules.nav.email_settings'),
+                icon: 'pi pi-plus',
+                command: () => {
+                    router.get(route('auth.logout'));
+                },
+            },
+        ]
+    },
+    {
         label: translate('modules.nav.logout'),
         icon: 'pi pi-plus',
         command: () => {
@@ -93,10 +130,34 @@ const setLocale = () => {
     });
 };
 
-watchEffect(() => {
-    showSuccess.value = !!page.props.flash?.success;
-    showError.value = !!page.props.flash?.error;
-});
+watch(
+    () => page.props.flash.success,
+    (newSuccess) => {
+        if (newSuccess) {
+            toast.add({
+                severity: 'success',
+                summary: newSuccess,
+                position: 'bottom-center',
+                life: 5000
+            });
+        }
+    }
+);
+
+watch(
+    () => page.props.flash.error,
+    (newError) => {
+        if (newError) {
+            toast.add({
+                severity: 'error',
+                summary: newError,
+                position: 'bottom-center',
+                life: 5000
+            });
+        }
+    }
+);
+
 
 // scroll to top start
 const showScrollTop = ref(false);
@@ -121,6 +182,7 @@ onUnmounted(() => {
 
 <template>
     <main>
+        <Toast />
         <header class="container mx-auto p-4">
             <Menubar :model="items">
                 <Menubar :model="items">
