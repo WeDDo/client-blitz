@@ -47,6 +47,7 @@ const emit = defineEmits([
                 {{ label }} <span v-if="props.required">*</span>
             </label>
             <Select
+                data-key="code"
                 v-model="value"
                 :options="options"
                 optionLabel="name"

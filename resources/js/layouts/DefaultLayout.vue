@@ -115,11 +115,17 @@ const showError = ref(false);
 
 const locale = ref({
     code: localStorage.getItem('user_locale') || page.props.locale || 'en',
-    name: (localStorage.getItem('user_locale') === 'lt') ? 'Lietuvių' : 'English',
+    name: translate(`app.locale.locales.${localStorage.getItem('user_locale')}`),
 });
 
 const setLocale = () => {
     localStorage.setItem('user_locale', locale.value.code);
+
+    // Ensure reactivity by updating the entire `locale.value` object
+    locale.value = {
+        code: locale.value.code,
+        name: translate(`app.locale.locales.${locale.value.code}`)
+    };
 
     router.post(route('set-locale'), {locale: locale.value.code}, {
         preserveState: true,
@@ -130,6 +136,19 @@ const setLocale = () => {
     });
 };
 
+const locales = computed(() => {
+    return [
+        {
+            code: 'lt',
+            name: translate(`app.locale.locales.lt`)
+        },
+        {
+            code: 'en',
+            name: translate(`app.locale.locales.en`)
+        },
+    ]
+});
+
 watch(
     () => page.props.flash.success,
     (newSuccess) => {
@@ -137,7 +156,6 @@ watch(
             toast.add({
                 severity: 'success',
                 summary: newSuccess,
-                position: 'bottom-center',
                 life: 5000
             });
         }
@@ -151,7 +169,6 @@ watch(
             toast.add({
                 severity: 'error',
                 summary: newError,
-                position: 'bottom-center',
                 life: 5000
             });
         }
@@ -182,7 +199,9 @@ onUnmounted(() => {
 
 <template>
     <main>
-        <Toast />
+        <Toast
+            position="bottom-center"
+        />
         <header class="container mx-auto p-4">
             <Menubar :model="items">
                 <Menubar :model="items">
@@ -197,23 +216,14 @@ onUnmounted(() => {
                 </Menubar>
                 <template #end>
                     <div class="flex items-center gap-5">
-                        <div v-if="isVisible">
-                            {{ lastDownloadedFileEvent?.url }}
-                        </div>
+<!--                        <div v-if="isVisible">-->
+<!--                            {{ lastDownloadedFileEvent?.url }}-->
+<!--                        </div>-->
                         <MainSelect
                             v-model:value="locale"
                             name="locale"
                             size="small"
-                            :options="[
-                            {
-                                code: 'lt',
-                                name: 'Lietuvių'
-                            },
-                            {
-                                code: 'en',
-                                name: 'English'
-                            },
-                        ]"
+                            :options="locales"
                             @change="setLocale"
                         />
                     </div>
