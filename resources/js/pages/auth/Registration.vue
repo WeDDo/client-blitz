@@ -32,7 +32,7 @@ const schema = yup.object({
         .required(() => translate('validation.required', { attribute: translate(`${mainTranslate.value}.password`) })),
     password_confirmation: yup
         .string()
-        .required(() => translate('validation.required', { attribute: translate(`${mainTranslate.value}.confirm_password`) })),
+        .required(() => translate('validation.required', { attribute: translate(`${mainTranslate.value}.password_confirmation`) })),
 })
 
 const form = useForm({
