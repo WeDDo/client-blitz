@@ -122,8 +122,6 @@ const setLocale = () => {
     localStorage.setItem('user_locale', locale.value.code);
 
     router.post(route('set-locale'), {locale: locale.value.code}, {
-        preserveState: true,
-        preserveScroll: true,
         onSuccess: () => {
             router.reload();
         }
