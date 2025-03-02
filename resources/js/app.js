@@ -3,6 +3,10 @@ import '../css/app.css';
 // import {Form} from "@primevue/forms";
 import {definePreset} from "@primevue/themes";
 import {createPinia} from "pinia";
+import {Toast} from "primevue";
+import {ToastService} from "primevue";
+import {Badge} from "primevue";
+import {Ripple} from "primevue";
 import {Tooltip} from "primevue";
 import {Card} from "primevue";
 import {Select} from "primevue";
@@ -92,15 +96,16 @@ pinia.use(piniaPluginPersistedstate);
 
 createInertiaApp({
     resolve: name => {
-        const pages = import.meta.glob('./Pages/**/*.vue', {eager: true})
-        let page = pages[`./Pages/${name}.vue`]
+        const pages = import.meta.glob('./pages/**/*.vue', {eager: true})
+        let page = pages[`./pages/${name}.vue`]
         page.default.layout = DefaultLayout;
-        return pages[`./Pages/${name}.vue`]
+        return pages[`./pages/${name}.vue`]
     },
     setup({el, App, props, plugin}) {
         createApp({render: () => h(App, props)})
             .use(plugin)
             .use(pinia)
+            .use(ToastService)
             .use(ZiggyVue, Ziggy)
             .use(PrimeVue, {
                 theme: {
@@ -126,8 +131,11 @@ createInertiaApp({
             .component('Form', Form)
             .component('DeferredContent', DeferredContent)
             .component('Select', Select)
+            .component('Badge', Badge)
             .component('Card', Card)
+            .component('Toast', Toast)
             .directive('tooltip', Tooltip)
+            .directive('ripple', Ripple)
             .mount(el)
     },
 });

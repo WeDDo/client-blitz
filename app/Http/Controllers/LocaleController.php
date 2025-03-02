@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DownloadedFile;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class LocaleController extends Controller
 {
@@ -16,6 +12,8 @@ class LocaleController extends Controller
       session()->put('locale', $locale);
       app()->setLocale($locale);
 
-      return back();
+      return back()->with('success', __('app/locale.locale_changed', [
+          'locale' => __("app/locale.locales.$locale"),
+      ]));
   }
 }

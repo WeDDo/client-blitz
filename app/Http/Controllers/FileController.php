@@ -59,7 +59,7 @@ class FileController extends Controller
             ->take(500)
             ->values();
 
-        return Inertia::render('Modules/Files', [
+        return Inertia::render('modules/Files', [
             'path' => $path,
             'directories' => $directories,
             'files' => $files,

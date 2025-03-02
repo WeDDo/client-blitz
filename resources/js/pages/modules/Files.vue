@@ -195,24 +195,24 @@ const toggleSortOrder = () => {
     });
 };
 
-function formatChannelName(channelName) {
-    return channelName.replace(/\/+$/, "").replace(/\//g, "_");
-}
-
-Echo.channel(formatChannelName(`files.${props.path}`))
-    .listen('.NewFileEvent', (event) => {
-        console.log('event', event, recursive.value)
-        if (event.path === props.path && !recursive.value) {
-            files.value.unshift(event);
-        }
-    });
-
-Echo.channel('ripper')
-    .listen('.GlobalNewFileEvent', (event) => {
-        if(recursive.value) {
-            files.value.unshift(event);
-        }
-    });
+// function formatChannelName(channelName) {
+//     return channelName.replace(/\/+$/, "").replace(/\//g, "_");
+// }
+//
+// Echo.channel(formatChannelName(`files.${props.path}`))
+//     .listen('.NewFileEvent', (event) => {
+//         console.log('event', event, recursive.value)
+//         if (event.path === props.path && !recursive.value) {
+//             files.value.unshift(event);
+//         }
+//     });
+//
+// Echo.channel('ripper')
+//     .listen('.GlobalNewFileEvent', (event) => {
+//         if(recursive.value) {
+//             files.value.unshift(event);
+//         }
+//     });
 
 // #Auto scroll
 // const autoScrollEnabled = ref(false);

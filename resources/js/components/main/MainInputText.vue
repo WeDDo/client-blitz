@@ -2,7 +2,7 @@
 const props = defineProps({
     name: {
         type: String,
-        default: 'name',
+        required: true,
     },
     label: {
         type: String,
@@ -27,7 +27,6 @@ const value = defineModel('value');
 
 <template>
     <div>
-<!--        <FloatLabel>-->
             <label :for="props.name" class="text-sm">
                 {{ label }} <span v-if="props.required">*</span>
             </label>
@@ -39,7 +38,6 @@ const value = defineModel('value');
                 fluid
                 :invalid="!!props.errors?.value?.[props.name]"
             />
-<!--        </FloatLabel>-->
         <Message
             v-if="props.errors?.value?.[props.name]"
             severity="error"

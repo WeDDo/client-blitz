@@ -29,7 +29,7 @@ class FileRipperController extends Controller
             return collect($this->allBoards)->where('code', $board)->first();
         })->values()->toArray();
 
-        return Inertia::render('Modules/FileRipper', [
+        return Inertia::render('modules/FileRipper', [
             'boards' => $boards,
             'keywords' => implode(',', config('app.fileripper.keywords')),
 

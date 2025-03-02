@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Events\GlobalNewFileEvent;
 use App\Events\NewFileEvent;
 use App\Models\DownloadedFile;
-use App\Services\Apis\Api;
+use App\Services\Auth\Apis\Api;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Sleep;

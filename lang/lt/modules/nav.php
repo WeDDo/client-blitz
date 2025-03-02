@@ -2,7 +2,8 @@
 
 return [
     'home' => 'Pagrindinis',
-    'files' => 'Failai',
-    'ripper' => 'Lupikas',
-    'favorites' => 'Mėgstamiausi',
+    'login' => 'Prisijungimas',
+    'registration' => 'Registracija',
+    'dashboard' => 'Valdymo skydelis',
+    'logout' => 'Atsijungti'
 ];

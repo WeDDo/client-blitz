@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InertiaTranslate;
 use Illuminate\Foundation\Application;
@@ -17,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             HandleInertiaRequests::class,
             InertiaTranslate::class,
+        ]);
+        $middleware->alias([
+            'auth.check' => Authenticate::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
