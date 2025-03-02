@@ -29,6 +29,8 @@ let timeoutId = null;
 
 const {translate} = useTranslation();
 
+const authenticated = computed(() => !!page.props.auth.user);
+
 const items = computed(() => [
     {
         label: translate('modules.nav.home'),
@@ -43,6 +45,7 @@ const items = computed(() => [
         command: () => {
             router.get(route('dashboard'));
         },
+        visible: authenticated.value,
     },
     {
         label: translate('modules.nav.login'),
@@ -50,6 +53,7 @@ const items = computed(() => [
         command: () => {
             router.get(route('login'));
         },
+        visible: !authenticated.value,
     },
     {
         label: translate('modules.nav.registration'),
@@ -57,6 +61,7 @@ const items = computed(() => [
         command: () => {
             router.get(route('registration'));
         },
+        visible: !authenticated.value,
     },
     {
         label: translate('modules.nav.logout'),
@@ -64,6 +69,7 @@ const items = computed(() => [
         command: () => {
             router.get(route('auth.logout'));
         },
+        visible: authenticated.value,
     },
 ]);
 
@@ -117,6 +123,16 @@ onUnmounted(() => {
     <main>
         <header class="container mx-auto p-4">
             <Menubar :model="items">
+                <Menubar :model="items">
+                    <template v-if="item.visible" #item="{ item, props, hasSubmenu, root }">
+                        <a v-ripple class="flex items-center" v-bind="props.action">
+                            <span>{{ item.label }}</span>
+                            <Badge v-if="item.badge" :class="{ 'ml-auto': !root, 'ml-2': root }" :value="item.badge" />
+                            <span v-if="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
+                            <i v-if="hasSubmenu" :class="['pi pi-angle-down ml-auto', { 'pi-angle-down': root, 'pi-angle-right': !root }]"></i>
+                        </a>
+                    </template>
+                </Menubar>
                 <template #end>
                     <div class="flex items-center gap-5">
                         <div v-if="isVisible">

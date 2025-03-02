@@ -2,7 +2,8 @@
 
 return [
     'home' => 'Home',
-    'files' => 'Files',
-    'ripper' => 'Ripper',
-    'favorites' => 'Favorites',
+    'login' => 'Login',
+    'registration' => 'Registration',
+    'dashboard' => 'Dashboard',
+    'logout' => 'Logout'
 ];

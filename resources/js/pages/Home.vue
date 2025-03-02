@@ -14,7 +14,7 @@ const page = usePage();
 
 <template>
     <div class="container mx-auto p-4">
-        <p v-if="$page.props.auth.user">Welcome, {{ page.props.auth.user.name }}</p>
+        <p>Home</p>
 <!--       <h1 class="text-2xl">-->
 <!--           {{ translate('modules.home.h1', {title: props.title}) }}-->
 <!--       </h1>-->
