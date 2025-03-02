@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -44,5 +45,34 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function emailSettings(): HasMany
+    {
+        return $this->hasMany(EmailSetting::class, 'created_by');
+    }
+
+    public function activeSmtpEmailSetting(): HasMany
+    {
+        return $this->hasMany(EmailSetting::class, 'created_by')
+            ->where('protocol', EmailSetting::$smtpProtocol)
+            ->where('active', true);
+    }
+
+    public function activeImapEmailSetting(): HasMany
+    {
+        return $this->hasMany(EmailSetting::class, 'created_by')
+            ->where('protocol', EmailSetting::$imapProtocol)
+            ->where('active', true);
+    }
+
+    public function emailMessages(): HasMany
+    {
+        return $this->hasMany(EmailMessage::class, 'created_by');
+    }
+
+    public function emailInboxSettings(): HasMany
+    {
+        return $this->hasMany(EmailInboxSetting::class, 'created_by');
     }
 }
