@@ -10,7 +10,8 @@ const props = defineProps({
     },
     errors: {
         type: Object,
-        default: () => {},
+        default: () => {
+        },
     },
     disabled: {
         type: Boolean,
@@ -42,23 +43,21 @@ const emit = defineEmits([
 
 <template>
     <div>
-<!--        <FloatLabel>-->
-            <label :for="props.name" class="text-sm">
-                {{ label }} <span v-if="props.required">*</span>
-            </label>
-            <Select
-                data-key="code"
-                v-model="value"
-                :options="options"
-                optionLabel="name"
-                :maxSelectedLabels="5"
-                fluid
-                placeholder="-"
-                :size="size"
-                :invalid="!!props.errors?.value?.[props.name]"
-                @change="emit('change', $event)"
-            />
-<!--        </FloatLabel>-->
+        <label :for="props.name" class="text-sm">
+            {{ label }} <span v-if="props.required">*</span>
+        </label>
+        <Select
+            data-key="code"
+            v-model="value"
+            :options="options"
+            optionLabel="name"
+            :maxSelectedLabels="5"
+            fluid
+            placeholder="-"
+            :size="size"
+            :invalid="!!props.errors?.value?.[props.name]"
+            @change="emit('change', $event)"
+        />
         <Message
             v-if="props.errors?.value?.[props.name]"
             severity="error"
