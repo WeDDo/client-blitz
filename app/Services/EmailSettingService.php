@@ -1,0 +1,162 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\EmailSetting;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Crypt;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Webklex\IMAP\Facades\Client;
+use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
+
+class EmailSettingService
+{
+    public function show(EmailSetting $emailSetting): EmailSetting
+    {
+        $emailSetting->password = Crypt::decryptString($emailSetting->password);
+
+        // todo make resource with primevue preset
+
+        $emailSetting->protocol = ['code' => $emailSetting->protocol];
+        $emailSetting->type = ['code' => $emailSetting->type];
+
+        return $emailSetting;
+    }
+
+    public function store(array $data): EmailSetting
+    {
+        $data['password'] = Crypt::encryptString($data['password']);
+
+        $emailSetting = auth()->user()->emailSettings()->create($data);
+
+        $this->checkActiveEmailSettings($data, $emailSetting);
+
+        return $emailSetting;
+    }
+
+    public function update(array $data, EmailSetting $emailSetting): void
+    {
+        if (isset($data['password'])) {
+            $data['password'] = Crypt::encryptString($data['password']);
+        }
+
+        $emailSetting->update($data);
+
+        $this->checkActiveEmailSettings($data, $emailSetting);
+    }
+
+    public function checkActiveEmailSettings(array $data, EmailSetting $emailSetting): void
+    {
+        if (isset($data['active']) && $data['active']) {
+            auth()->user()->emailSettings()
+                ->where('id', '<>', $emailSetting->id)
+                ->where('protocol', $emailSetting->protocol)
+                ->update(['active' => false]);
+        }
+    }
+
+    public function copy(EmailSetting $emailSetting): EmailSetting
+    {
+        $newEmailSetting = $emailSetting->replicate();
+        $newEmailSetting->active = false;
+        $newEmailSetting->save();
+        return $newEmailSetting;
+    }
+
+    public function checkConnection(EmailSetting $emailSetting): void
+    {
+        if ($emailSetting->protocol === EmailSetting::$imapProtocol) {
+            $this->checkImapConnection($emailSetting);
+        } elseif ($emailSetting->protocol === EmailSetting::$smtpProtocol) {
+            $this->checkSmtpConnection($emailSetting);
+        } else {
+            throw new HttpResponseException(
+                response()->json(['error' => 'unsupported_protocol'], 400)
+            );
+        }
+    }
+
+    public function checkImapConnection(EmailSetting $emailSetting): void
+    {
+        $client = Client::make($this->setImapEmailConfig($emailSetting));
+        try {
+            $client->connect();
+        } catch (ConnectionFailedException $e) {
+            throw new HttpResponseException(
+                response()->json(['error' => 'imap_connection_failed'], 401)
+            );
+        }
+    }
+
+    public function checkSmtpConnection(EmailSetting $emailSetting): void
+    {
+        $smtpConfig = $this->setSmtpEmailConfig($emailSetting);
+
+        $transport = new EsmtpTransport(
+            $smtpConfig['host'],
+            $smtpConfig['port'],
+            false
+        );
+
+        $transport->setUsername($smtpConfig['username']);
+        $transport->setPassword($smtpConfig['password']);
+
+        try {
+            $transport->start();
+
+        } catch (\Exception $e) {
+            throw new HttpResponseException(
+                response()->json(['error' => 'smtp_connection_failed', 'message' => $e->getMessage()], 401)
+            );
+        }
+    }
+
+    public function setImapEmailConfig(?EmailSetting $emailSetting = null): array
+    {
+        $user = auth()->user();
+        if (!$emailSetting) {
+            $emailSetting = $user->activeImapEmailSetting()->first();
+        }
+
+        config([
+            "imap.users.$user->id" => [
+                'host' => $emailSetting->host,
+                'port' => $emailSetting->port,
+                'encryption' => $emailSetting->encryption,
+                'validate_cert' => $emailSetting->validate_cert,
+                'username' => $emailSetting->username,
+                'password' => Crypt::decryptString($emailSetting->password),
+                'protocol' => $emailSetting->protocol,
+            ]
+        ]);
+
+        return config("imap.users.$user->id");
+    }
+
+    public function setSmtpEmailConfig(?EmailSetting $emailSetting = null): array
+    {
+        $user = auth()->user();
+        if (!$emailSetting) {
+            $emailSetting = $user->activeImapEmailSetting()->first();
+        }
+
+        $config = [
+            'transport' => 'smtp',
+            'host' => $emailSetting->host,
+            'port' => $emailSetting->port,
+            'encryption' => $emailSetting->encryption,
+            'username' => $emailSetting->username,
+            'password' => Crypt::decryptString($emailSetting->password),
+            'auth_mode' => 'LOGIN',
+//            'authentication' => 'LOGIN',
+//            'timeout' => null,
+//            'validate_cert' => $emailSetting->validate_cert ?? true,
+        ];
+
+        config(["mail.mailers.smtp.users.$user->id" => $config]);
+
+        return config("mail.mailers.smtp.users.$user->id");
+    }
+}
+
+

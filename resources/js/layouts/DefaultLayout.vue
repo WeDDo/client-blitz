@@ -93,9 +93,9 @@ const items = computed(() => [
             },
             {
                 label: translate('modules.nav.email_settings'),
-                icon: 'pi pi-plus',
+                icon: 'pi pi-mail',
                 command: () => {
-                    router.get(route('auth.logout'));
+                    router.get(route('modules.email-settings.index'));
                 },
             },
         ]
@@ -216,6 +216,7 @@ onUnmounted(() => {
                             name="locale"
                             size="small"
                             :options="locales"
+                            :show-clear="false"
                             @change="setLocale"
                         />
                     </div>

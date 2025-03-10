@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\EmailSettingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,18 @@ Route::middleware('auth.check')->group(function () {
     Route::get('dashboard', function () {
         return inertia('Dashboard');
     })->name('dashboard');
+
+    Route::get('email-settings', [EmailSettingController::class, 'index'])
+        ->name('modules.email-settings.index');
+    Route::get('email-settings/create', [EmailSettingController::class, 'create'])
+        ->name('modules.email-settings.create');
+    Route::get('email-settings/{emailSetting}', [EmailSettingController::class, 'show'])
+        ->name('modules.email-settings.show');
+
+    Route::post('email-settings', [EmailSettingController::class, 'store'])
+        ->name('modules.email-settings.store');
+    Route::put('email-settings/{emailSetting}', [EmailSettingController::class, 'update'])
+        ->name('modules.email-settings.update');
 });
 //Route::get('files', [FileController::class, 'index'])
 //    ->name('files.index');

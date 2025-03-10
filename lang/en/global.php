@@ -8,4 +8,7 @@ return [
 
     'sort_newest' => 'Latest',
     'sort_oldest' => 'Oldest',
+
+    'create' => 'Create',
+    'update' => 'Update'
 ];
