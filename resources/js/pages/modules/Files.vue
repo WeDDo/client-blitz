@@ -381,7 +381,6 @@ const fileGridClass = computed(() => {
 });
 
 const navigateTo = (newPath) => {
-    router.post('/set-locale', {locale: 'lt'});
     router.get(route('files.index', {path: newPath}));
 };
 

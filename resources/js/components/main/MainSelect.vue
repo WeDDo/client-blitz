@@ -33,6 +33,10 @@ const props = defineProps({
         type: String,
         default: undefined,
     },
+    showClear: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const value = defineModel('value');
@@ -55,6 +59,7 @@ const emit = defineEmits([
             fluid
             placeholder="-"
             :size="size"
+            :show-clear="showClear"
             :invalid="!!props.errors?.value?.[props.name]"
             @change="emit('change', $event)"
         />

@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class EmailSettingRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'name' => 'required',
+            'type' => 'required',
+            'host' => 'required',
+            'port' => 'required',
+            'encryption' => 'required',
+//            'validate_cert' => 'nullable',
+            'username' => 'required',
+            'password' => 'required',
+            'protocol' => 'required',
+            'active' => 'nullable'
+        ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'type' => $this->type['code'] ?? null,
+            'protocol' => $this->protocol['code'] ?? null,
+        ]);
+    }
+
+    public function attributes(): array
+    {
+        return array_merge(parent::attributes(), [
+//            'boards' => __('modules/fileripper.boards'),
+//            'keywords' => __('modules/fileripper.keywords')
+        ]);
+    }
+}

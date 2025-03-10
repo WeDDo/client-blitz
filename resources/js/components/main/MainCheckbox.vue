@@ -26,7 +26,7 @@ const value = defineModel('value');
 </script>
 
 <template>
-    <div>
+    <div class="flex items-center gap-2 mt-2">
 <!--        <FloatLabel>-->
             <label :for="props.name" class="text-sm">
                 {{ label }} <span v-if="props.required">*</span>

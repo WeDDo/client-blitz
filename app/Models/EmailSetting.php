@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\CreateUpdateUserTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EmailSetting extends Model
 {
+    use CreateUpdateUserTrait;
+
     protected $fillable = [
         'name',
         'type',
