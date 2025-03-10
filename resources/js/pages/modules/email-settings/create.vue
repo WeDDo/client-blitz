@@ -35,7 +35,6 @@ const page = usePage();
 const {translate} = useTranslation();
 const {schema, initialValues} = useFormValidation();
 
-const options = ref(page.props.options);
 const isLoading = ref(false);
 
 const form = useForm({
