@@ -113,15 +113,12 @@ const items = computed(() => [
 const showSuccess = ref(false);
 const showError = ref(false);
 
-const locale = ref({
-    code: localStorage.getItem('user_locale') || page.props.locale || 'en',
-    name: translate(`app.locale.locales.${localStorage.getItem('user_locale')}`),
-});
+const locale = ref(localStorage.getItem('user_locale') || page.props.locale || 'en');
 
 const setLocale = () => {
-    localStorage.setItem('user_locale', locale.value.code);
+    localStorage.setItem('user_locale', locale.value);
 
-    router.post(route('set-locale'), {locale: locale.value.code}, {
+    router.post(route('set-locale'), {locale: locale.value}, {
         onSuccess: () => {
             router.reload();
         }

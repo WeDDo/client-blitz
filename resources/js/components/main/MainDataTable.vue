@@ -18,6 +18,8 @@ const emit = defineEmits([
         <DataTable
             :value="dataTableData.data"
             tableStyle="min-width: 50rem"
+            scrollable
+            scroll-height="500px"
         >
             <slot></slot>
         </DataTable>
