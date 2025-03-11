@@ -1,9 +1,16 @@
 <script setup>
+import {router} from "@inertiajs/vue3";
+import {route} from "ziggy-js";
+
 const props = defineProps({
     paginate: {
         type: Boolean,
         default: true,
-    }
+    },
+    editRouteFn: {
+        type: Function,
+        default: null,
+    },
 });
 
 const dataTableData = defineModel('dataTableData');
@@ -11,6 +18,10 @@ const dataTableData = defineModel('dataTableData');
 const emit = defineEmits([
     'refresh'
 ]);
+
+function handleRowDblClick(item) {
+    router.get(props.editRouteFn(item));
+}
 </script>
 
 <template>
@@ -20,6 +31,7 @@ const emit = defineEmits([
             tableStyle="min-width: 50rem"
             scrollable
             scroll-height="500px"
+            @row-dblclick="handleRowDblClick"
         >
             <slot></slot>
         </DataTable>

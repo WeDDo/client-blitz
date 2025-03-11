@@ -14,22 +14,6 @@ import {useTranslation} from "../composables/useTranslation.js";
 
 const page = usePage();
 const toast = useToast();
-
-const lastDownloadedFileEvent = ref();
-const isVisible = ref(false);
-let timeoutId = null;
-
-// Echo.channel('ripper')
-//     .listen('.GlobalNewFileEvent', (event) => {
-//         lastDownloadedFileEvent.value = event;
-//         isVisible.value = true;
-//
-//         if (timeoutId) clearTimeout(timeoutId);
-//         timeoutId = setTimeout(() => {
-//             isVisible.value = false;
-//         }, 10000);
-//     });
-
 const {translate} = useTranslation();
 
 const authenticated = computed(() => !!page.props.auth.user);
@@ -68,32 +52,28 @@ const items = computed(() => [
     },
     {
         label: translate('modules.nav.emails'),
-        icon: 'pi pi-plus',
+        icon: 'pi pi-envelope',
         items: [
             {
                 label: translate('modules.nav.personal_inboxes'),
-                icon: 'pi pi-plus',
                 command: () => {
                     router.get(route('auth.logout'));
                 },
             },
             {
                 label: translate('modules.nav.tickets'),
-                icon: 'pi pi-plus',
                 command: () => {
                     router.get(route('auth.logout'));
                 },
             },
             {
                 label: translate('modules.nav.email_inbox_settings'),
-                icon: 'pi pi-plus',
                 command: () => {
                     router.get(route('auth.logout'));
                 },
             },
             {
                 label: translate('modules.nav.email_settings'),
-                icon: 'pi pi-mail',
                 command: () => {
                     router.get(route('modules.email-settings.index'));
                 },
