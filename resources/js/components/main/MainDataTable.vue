@@ -38,7 +38,7 @@ function handleRowDblClick(item) {
 
         <div
             v-if="props.paginate"
-            class="flex justify-end"
+            class="flex justify-end mt-2"
         >
             <Paginator
                 :rows="dataTableData.per_page ?? 0"

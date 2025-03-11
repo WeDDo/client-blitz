@@ -24,11 +24,11 @@
                     <Column field="host" header="host"></Column>
                     <Column field="port" header="port"></Column>
                     <Column field="encryption" header="encryption"></Column>
-                    <Column field="validate_cert" header="validate_cert"></Column>
+<!--                    <Column field="validate_cert" header="validate_cert"></Column>-->
                     <Column field="username" header="username"></Column>
-                    <Column field="password" header="password"></Column>
+<!--                    <Column field="password" header="password"></Column>-->
                     <Column field="protocol" header="protocol"></Column>
-                    <Column field="active" header="active"></Column>
+<!--                    <Column field="active" header="active"></Column>-->
                 </MainDataTable>
             </div>
         </div>
