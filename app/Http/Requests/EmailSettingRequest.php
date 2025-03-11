@@ -35,14 +35,6 @@ class EmailSettingRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'type' => $this->type['code'] ?? null,
-            'protocol' => $this->protocol['code'] ?? null,
-        ]);
-    }
-
     public function attributes(): array
     {
         return array_merge(parent::attributes(), [

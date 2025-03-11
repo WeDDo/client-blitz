@@ -15,11 +15,6 @@ class EmailSettingService
     {
         $emailSetting->password = Crypt::decryptString($emailSetting->password);
 
-        // todo make resource with primevue preset
-
-        $emailSetting->protocol = ['code' => $emailSetting->protocol];
-        $emailSetting->type = ['code' => $emailSetting->type];
-
         return $emailSetting;
     }
 

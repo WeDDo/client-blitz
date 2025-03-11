@@ -14,22 +14,6 @@ import {useTranslation} from "../composables/useTranslation.js";
 
 const page = usePage();
 const toast = useToast();
-
-const lastDownloadedFileEvent = ref();
-const isVisible = ref(false);
-let timeoutId = null;
-
-// Echo.channel('ripper')
-//     .listen('.GlobalNewFileEvent', (event) => {
-//         lastDownloadedFileEvent.value = event;
-//         isVisible.value = true;
-//
-//         if (timeoutId) clearTimeout(timeoutId);
-//         timeoutId = setTimeout(() => {
-//             isVisible.value = false;
-//         }, 10000);
-//     });
-
 const {translate} = useTranslation();
 
 const authenticated = computed(() => !!page.props.auth.user);
@@ -44,7 +28,7 @@ const items = computed(() => [
     },
     {
         label: translate('modules.nav.dashboard'),
-        icon: 'pi pi-home',
+        icon: 'pi pi-globe',
         command: () => {
             router.get(route('dashboard'));
         },
@@ -68,32 +52,34 @@ const items = computed(() => [
     },
     {
         label: translate('modules.nav.emails'),
-        icon: 'pi pi-plus',
+        icon: 'pi pi-envelope',
         items: [
+            // {
+            //     label: translate('modules.nav.personal_inboxes'),
+            //     command: () => {
+            //         router.get(route('auth.logout'));
+            //     },
+            // },
+            // {
+            //     label: translate('modules.nav.tickets'),
+            //     command: () => {
+            //         router.get(route('auth.logout'));
+            //     },
+            // },
+            // {
+            //     label: translate('modules.nav.email_inbox_settings'),
+            //     command: () => {
+            //         router.get(route('auth.logout'));
+            //     },
+            // },
             {
-                label: translate('modules.nav.personal_inboxes'),
-                icon: 'pi pi-plus',
+                label: translate('modules.nav.emails'),
                 command: () => {
-                    router.get(route('auth.logout'));
-                },
-            },
-            {
-                label: translate('modules.nav.tickets'),
-                icon: 'pi pi-plus',
-                command: () => {
-                    router.get(route('auth.logout'));
-                },
-            },
-            {
-                label: translate('modules.nav.email_inbox_settings'),
-                icon: 'pi pi-plus',
-                command: () => {
-                    router.get(route('auth.logout'));
+                    router.get(route('modules.emails.index'));
                 },
             },
             {
                 label: translate('modules.nav.email_settings'),
-                icon: 'pi pi-mail',
                 command: () => {
                     router.get(route('modules.email-settings.index'));
                 },
@@ -113,15 +99,12 @@ const items = computed(() => [
 const showSuccess = ref(false);
 const showError = ref(false);
 
-const locale = ref({
-    code: localStorage.getItem('user_locale') || page.props.locale || 'en',
-    name: translate(`app.locale.locales.${localStorage.getItem('user_locale')}`),
-});
+const locale = ref(localStorage.getItem('user_locale') || page.props.locale || 'en');
 
 const setLocale = () => {
-    localStorage.setItem('user_locale', locale.value.code);
+    localStorage.setItem('user_locale', locale.value);
 
-    router.post(route('set-locale'), {locale: locale.value.code}, {
+    router.post(route('set-locale'), {locale: locale.value}, {
         onSuccess: () => {
             router.reload();
         }

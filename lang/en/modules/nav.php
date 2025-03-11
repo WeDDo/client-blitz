@@ -5,5 +5,8 @@ return [
     'login' => 'Login',
     'registration' => 'Registration',
     'dashboard' => 'Dashboard',
-    'logout' => 'Logout'
+    'logout' => 'Logout',
+
+    'emails' => 'Emails',
+    'email_settings' => 'Email settings',
 ];

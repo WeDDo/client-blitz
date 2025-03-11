@@ -3,6 +3,9 @@ import '../css/app.css';
 // import {Form} from "@primevue/forms";
 import {definePreset} from "@primevue/themes";
 import {createPinia} from "pinia";
+import {Paginator} from "primevue";
+import {Column} from "primevue";
+import {DataTable} from "primevue";
 import {Toast} from "primevue";
 import {ToastService} from "primevue";
 import {Badge} from "primevue";
@@ -124,6 +127,7 @@ createInertiaApp({
             .component('IconField', IconField)
             .component('InputIcon', InputIcon)
             .component('InputText', InputText)
+            .component('Paginator', Paginator)
             .component('FloatLabel', FloatLabel)
             .component('Menubar', Menubar)
             .component('MultiSelect', MultiSelect)
@@ -134,6 +138,8 @@ createInertiaApp({
             .component('Badge', Badge)
             .component('Card', Card)
             .component('Toast', Toast)
+            .component('DataTable', DataTable)
+            .component('Column', Column)
             .directive('tooltip', Tooltip)
             .directive('ripple', Ripple)
             .mount(el)

@@ -206,51 +206,6 @@ const toggleSortOrder = () => {
 //             files.value.unshift(event);
 //         }
 //     });
-//
-// Echo.channel('ripper')
-//     .listen('.GlobalNewFileEvent', (event) => {
-//         if(recursive.value) {
-//             files.value.unshift(event);
-//         }
-//     });
-
-// #Auto scroll
-// const autoScrollEnabled = ref(false);
-// let scrollFrame = null;
-//
-// const toggleAutoScroll = () => {
-//     if (autoScrollEnabled.value) {
-//         stopAutoScroll();
-//     } else {
-//         startAutoScroll();
-//     }
-// };
-//
-// const startAutoScroll = () => {
-//     document.addEventListener("dblclick", stopAutoScroll); // Stop scrolling on any click
-//     autoScrollEnabled.value = true;
-//     scrollStep();
-// };
-//
-// const scrollStep = () => {
-//     if (!autoScrollEnabled.value) return;
-//     window.scrollBy({top: 1, behavior: "smooth"});
-//     scrollFrame = requestAnimationFrame(scrollStep);
-// };
-//
-// const stopAutoScroll = () => {
-//     autoScrollEnabled.value = false;
-//     document.removeEventListener("dblclick", stopAutoScroll); // Remove event listener
-//     if (scrollFrame) {
-//         cancelAnimationFrame(scrollFrame);
-//         scrollFrame = null;
-//     }
-// };
-//
-// onUnmounted(() => {
-//     stopAutoScroll();
-// });
-// #Auto scroll end
 
 // scroll to top start
 const showScrollTop = ref(false);

@@ -12,7 +12,7 @@ export function useFormValidation() {
             .string()
             .required(translate('validation.required', {attribute: translate('modules.emailSetting.name')})),
         type: yup
-            .object()
+            .string()
             .required(translate('validation.required', {attribute: translate('modules.emailSetting.type')})),
         host: yup
             .string()
@@ -30,7 +30,7 @@ export function useFormValidation() {
             .string()
             .required(translate('validation.required', {attribute: translate('modules.emailSetting.password')})),
         protocol: yup
-            .object()
+            .string()
             .required(translate('validation.required', {attribute: translate('modules.emailSetting.protocol')})),
         active: yup
             .bool()
@@ -39,14 +39,14 @@ export function useFormValidation() {
 
     const initialValues = {
         name: null,
-        type: { code: 'personal'},
+        type: 'personal',
         host: 'imap.gmail.com',
         port: 993,
         encryption: 'ssl',
         validate_cert: false,
         username: null,
         password: null,
-        protocol: { code: 'imap'},
+        protocol: 'imap',
         active: false,
     };
 

@@ -6,6 +6,7 @@ use App\DataTables\EmailSettings\EmailSettingDataTable;
 use App\Http\Requests\EmailSettingRequest;
 use App\Models\EmailSetting;
 use App\Services\EmailSettingService;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
 
 class EmailSettingController extends Controller
@@ -18,7 +19,7 @@ class EmailSettingController extends Controller
     {
         return inertia('modules/email-settings/index', [
             'main' => [
-                'translate' => '$this->mainTranslate',
+//                'translate' => $this->mainTranslate,
             ],
             'data_table' => (new EmailSettingDataTable())->getData(),
         ]);
@@ -27,67 +28,46 @@ class EmailSettingController extends Controller
     public function create(): Response
     {
         return inertia('modules/email-settings/create', [
-            'options' => [
-                'types' => collect(EmailSetting::getTypes())
-                    ->map(function ($type) {
-                        return ['code' => $type, 'name' => $type];
-                    }),
-                'protocols' => collect(EmailSetting::getProtocols())
-                    ->map(function ($type) {
-                        return ['code' => $type, 'name' => $type];
-                    }),
-            ],
+            'options' => $this->getOptions(),
         ]);
     }
 
-    public function store(EmailSettingRequest $request): Response
+    public function store(EmailSettingRequest $request): RedirectResponse
     {
-        $emailSetting = $this->emailSettingService->store($request->validated());
+        $this->emailSettingService->store($request->validated());
 
-        return inertia('modules/email-settings/index', [
-            'main' => [
-                'translate' => '$this->mainTranslate',
-            ],
-            'data_table' => (new EmailSettingDataTable())->getData(),
-        ]);
+        return redirect()->route('modules.email-settings.index');
     }
 
     public function show(EmailSetting $emailSetting): Response
     {
         return inertia('modules/email-settings/edit', [
             'item' => $this->emailSettingService->show($emailSetting),
-            'options' => [
-                'types' => collect(EmailSetting::getTypes())
-                    ->map(function ($type) {
-                        return ['code' => $type, 'name' => $type];
-                    }),
-                'protocols' => collect(EmailSetting::getProtocols())
-                    ->map(function ($type) {
-                        return ['code' => $type, 'name' => $type];
-                    }),
-            ],
+            'options' => $this->getOptions(),
         ]);
     }
 
-    public function update(EmailSettingRequest $request, EmailSetting $emailSetting): Response
+    public function update(EmailSettingRequest $request, EmailSetting $emailSetting): RedirectResponse
     {
         $this->emailSettingService->update($request->validated(), $emailSetting);
 
-        return inertia('modules/email-settings/edit', [
-            'item' => $this->emailSettingService->show($emailSetting),
-            'options' => [
-                'types' => collect(EmailSetting::getTypes())
-                    ->map(function ($type) {
-                        return ['code' => $type, 'name' => $type];
-                    }),
-                'protocols' => collect(EmailSetting::getProtocols())
-                    ->map(function ($type) {
-                        return ['code' => $type, 'name' => $type];
-                    }),
-            ],
-        ]);
+        return redirect()->route('modules.email-settings.show', $emailSetting->id);
     }
 
+//    public function destroy(EmailSetting $emailSetting): RedirectResponse
+//    {
+//        $this->emailSettingService->delete($emailSetting);
+//
+//        return redirect()->route('email-settings.index');
+//    }
+
+    private function getOptions(): array
+    {
+        return [
+            'types' => collect(EmailSetting::getTypes())->map(fn($type) => ['code' => $type, 'name' => $type]),
+            'protocols' => collect(EmailSetting::getProtocols())->map(fn($protocol) => ['code' => $protocol, 'name' => $protocol]),
+        ];
+    }
 //    public function show(EmailSetting $emailSetting): JsonResponse
 //    {
 //        $emailSetting = $this->emailSettingService->show($emailSetting);
@@ -109,11 +89,7 @@ class EmailSettingController extends Controller
 //        ]);
 //    }
 //
-//    public function destroy(EmailSetting $emailSetting): JsonResponse
-//    {
-//        $emailSetting->delete();
-//        return response()->json([], 204);
-//    }
+
 //
 //    public function copy(EmailSetting $emailSetting): JsonResponse
 //    {

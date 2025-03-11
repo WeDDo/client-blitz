@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmailSettingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
@@ -33,6 +34,9 @@ Route::middleware('auth.check')->group(function () {
     Route::get('dashboard', function () {
         return inertia('Dashboard');
     })->name('dashboard');
+
+    Route::get('emails', [EmailController::class, 'index'])
+        ->name('modules.emails.index');
 
     Route::get('email-settings', [EmailSettingController::class, 'index'])
         ->name('modules.email-settings.index');
