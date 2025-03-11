@@ -4,5 +4,5 @@ namespace App\DataTables;
 
 abstract class BaseDataTable
 {
-    protected int $perPage = 2;
+    protected int $perPage = 5;
 }
