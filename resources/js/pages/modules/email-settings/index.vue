@@ -15,6 +15,7 @@
             <div class="card mt-5">
                 <MainDataTable
                     v-model:data-table-data="dataTableData"
+                    :edit-route-fn="(item) => route('modules.email-settings.show', { emailSetting: item.data.id })"
                     @refresh="fetchData"
                 >
                     <Column field="id" header="id"></Column>
@@ -73,7 +74,6 @@ function goToEdit(emailSettingId) {
 }
 
 async function fetchData(event = null) {
-    console.log('eee', event)
     router.get(route("modules.email-settings.index"), {page: event.page + 1}, {
         preserveState: true,  // Prevents full page reload
         replace: true,  // Updates the current URL
