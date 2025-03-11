@@ -1,0 +1,73 @@
+<template>
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl mb-4">
+            {{ translate('modules.emailSetting.h1') }}
+        </h1>
+        <div class="flex gap-2 justify-end">
+            <Button size="small" @click="goToCreate">
+                <i class="pi pi-plus"></i> {{ translate('global.create') }}
+            </Button>
+            <Button size="small" @click="goToIndex">
+                <i class="pi pi-times"></i> {{ translate('global.back') }}
+            </Button>
+        </div>
+        <div>
+            <div class="card mt-5">
+                <MainDataTable
+                    v-model:data-table-data="dataTableData"
+                    :edit-route-fn="(item) => route('modules.email-settings.show', { emailSetting: item.data.id })"
+                    @refresh="fetchData"
+                >
+                    <Column field="id" header="id"></Column>
+                    <Column field="name" header="name"></Column>
+                    <Column field="type" header="type"></Column>
+                    <Column field="host" header="host"></Column>
+                    <Column field="port" header="port"></Column>
+                    <Column field="encryption" header="encryption"></Column>
+<!--                    <Column field="validate_cert" header="validate_cert"></Column>-->
+                    <Column field="username" header="username"></Column>
+<!--                    <Column field="password" header="password"></Column>-->
+                    <Column field="protocol" header="protocol"></Column>
+<!--                    <Column field="active" header="active"></Column>-->
+                </MainDataTable>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import {router} from "@inertiajs/vue3";
+import {usePage} from "@inertiajs/vue3";
+import {ref} from "vue";
+import {route} from "ziggy-js";
+import MainDataTable from "../../../components/main/MainDataTable.vue";
+import {useTranslation} from "../../../composables/useTranslation.js";
+
+const page = usePage();
+const {translate} = useTranslation();
+
+const dataTableData = ref(page.props.data_table);
+
+function goToIndex() {
+    router.get(route('dashboard'));
+}
+
+function goToCreate() {
+    router.get(route('modules.email-settings.create'));
+}
+
+function goToEdit(emailSettingId) {
+    router.get(route('modules.email-settings.show', { emailSetting: emailSettingId }));
+}
+
+async function fetchData(event = null) {
+    router.get(route("modules.email-settings.index"), {page: event.page + 1}, {
+        preserveState: true,  // Prevents full page reload
+        replace: true,  // Updates the current URL
+        only: ['data_table'],  // Fetch only the data_table to avoid unnecessary updates
+        onSuccess: (page) => {
+            dataTableData.value = page.props.data_table;  // Update the table data
+        }
+    });
+}
+</script>

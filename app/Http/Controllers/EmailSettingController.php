@@ -36,7 +36,7 @@ class EmailSettingController extends Controller
     {
         $this->emailSettingService->store($request->validated());
 
-        return redirect()->route('email-settings.index');
+        return redirect()->route('modules.email-settings.index');
     }
 
     public function show(EmailSetting $emailSetting): Response
@@ -51,7 +51,7 @@ class EmailSettingController extends Controller
     {
         $this->emailSettingService->update($request->validated(), $emailSetting);
 
-        return redirect()->route('email-settings.show', $emailSetting->id);
+        return redirect()->route('modules.email-settings.show', $emailSetting->id);
     }
 
 //    public function destroy(EmailSetting $emailSetting): RedirectResponse

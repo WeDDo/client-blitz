@@ -54,22 +54,28 @@ const items = computed(() => [
         label: translate('modules.nav.emails'),
         icon: 'pi pi-envelope',
         items: [
+            // {
+            //     label: translate('modules.nav.personal_inboxes'),
+            //     command: () => {
+            //         router.get(route('auth.logout'));
+            //     },
+            // },
+            // {
+            //     label: translate('modules.nav.tickets'),
+            //     command: () => {
+            //         router.get(route('auth.logout'));
+            //     },
+            // },
+            // {
+            //     label: translate('modules.nav.email_inbox_settings'),
+            //     command: () => {
+            //         router.get(route('auth.logout'));
+            //     },
+            // },
             {
-                label: translate('modules.nav.personal_inboxes'),
+                label: translate('modules.nav.emails'),
                 command: () => {
-                    router.get(route('auth.logout'));
-                },
-            },
-            {
-                label: translate('modules.nav.tickets'),
-                command: () => {
-                    router.get(route('auth.logout'));
-                },
-            },
-            {
-                label: translate('modules.nav.email_inbox_settings'),
-                command: () => {
-                    router.get(route('auth.logout'));
+                    router.get(route('modules.emails.index'));
                 },
             },
             {
