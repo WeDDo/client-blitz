@@ -12,13 +12,36 @@
             </Button>
         </div>
         <div>
-            <div
-                v-for="dataRow in dataTableData.data"
-                :key="dataRow.id"
-                class="card mt-5"
-                @click="goToEdit(dataRow.id)"
-            >
-                {{dataRow}}
+            <div class="card mt-5">
+                <MainDataTable
+                    v-model:data-table-data="dataTableData"
+                    @refresh="fetchData"
+                >
+                    <Column field="id" header="id"></Column>
+                    <Column field="name" header="name"></Column>
+                    <Column field="type" header="type"></Column>
+                    <Column field="host" header="host"></Column>
+                    <Column field="port" header="port"></Column>
+                    <Column field="encryption" header="encryption"></Column>
+                    <Column field="validate_cert" header="validate_cert"></Column>
+                    <Column field="username" header="username"></Column>
+                    <Column field="password" header="password"></Column>
+                    <Column field="protocol" header="protocol"></Column>
+                    <Column field="active" header="active"></Column>
+                </MainDataTable>
+<!--                <DataTable :value="dataTableData.data" tableStyle="min-width: 50rem">-->
+<!--                    <Column field="id" header="id"></Column>-->
+<!--                    <Column field="name" header="name"></Column>-->
+<!--                    <Column field="type" header="type"></Column>-->
+<!--                    <Column field="host" header="host"></Column>-->
+<!--                    <Column field="port" header="port"></Column>-->
+<!--                    <Column field="encryption" header="encryption"></Column>-->
+<!--                    <Column field="validate_cert" header="validate_cert"></Column>-->
+<!--                    <Column field="username" header="username"></Column>-->
+<!--                    <Column field="password" header="password"></Column>-->
+<!--                    <Column field="protocol" header="protocol"></Column>-->
+<!--                    <Column field="active" header="active"></Column>-->
+<!--                </DataTable>-->
             </div>
         </div>
     </div>
@@ -29,6 +52,7 @@ import {router} from "@inertiajs/vue3";
 import {usePage} from "@inertiajs/vue3";
 import {ref} from "vue";
 import {route} from "ziggy-js";
+import MainDataTable from "../../../components/main/MainDataTable.vue";
 import {useTranslation} from "../../../composables/useTranslation.js";
 
 const page = usePage();
@@ -46,5 +70,17 @@ function goToCreate() {
 
 function goToEdit(emailSettingId) {
     router.get(route('modules.email-settings.show', { emailSetting: emailSettingId }));
+}
+
+async function fetchData(event = null) {
+    console.log('eee', event)
+    router.get(route("modules.email-settings.index"), {page: event.page + 1}, {
+        preserveState: true,  // Prevents full page reload
+        replace: true,  // Updates the current URL
+        only: ['data_table'],  // Fetch only the data_table to avoid unnecessary updates
+        onSuccess: (page) => {
+            dataTableData.value = page.props.data_table;  // Update the table data
+        }
+    });
 }
 </script>
