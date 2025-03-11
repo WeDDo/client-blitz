@@ -88,6 +88,17 @@ class EmailSettingController extends Controller
         ]);
     }
 
+    public function destroy(EmailSetting $emailSetting): Response
+    {
+        $emailSetting->delete();
+
+        return inertia('modules/email-settings/index', [
+            'main' => [
+                'translate' => '$this->mainTranslate',
+            ],
+            'data_table' => (new EmailSettingDataTable())->getData(),
+        ]);
+    }
 //    public function show(EmailSetting $emailSetting): JsonResponse
 //    {
 //        $emailSetting = $this->emailSettingService->show($emailSetting);
@@ -109,11 +120,7 @@ class EmailSettingController extends Controller
 //        ]);
 //    }
 //
-//    public function destroy(EmailSetting $emailSetting): JsonResponse
-//    {
-//        $emailSetting->delete();
-//        return response()->json([], 204);
-//    }
+
 //
 //    public function copy(EmailSetting $emailSetting): JsonResponse
 //    {
