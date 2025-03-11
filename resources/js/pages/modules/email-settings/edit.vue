@@ -3,14 +3,12 @@
         <h1 class="text-2xl mb-4">
             {{ translate('modules.emailSetting.h1') }}
         </h1>
-        <div class="flex gap-2">
-            <Button @click="goToIndex">
-                {{ translate('global.back') }}
+        <div class="flex gap-2 justify-end">
+            <Button size="small" @click="handleUpdate">
+                <i class="pi pi-save"></i> {{ translate('global.save') }}
             </Button>
-            <Button
-                @click="handleUpdate"
-            >
-                {{ translate('global.update') }}
+            <Button size="small" @click="goToIndex">
+                <i class="pi pi-times"></i> {{ translate('global.back') }}
             </Button>
         </div>
         <div>

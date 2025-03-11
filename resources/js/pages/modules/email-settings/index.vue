@@ -3,12 +3,12 @@
         <h1 class="text-2xl mb-4">
             {{ translate('modules.emailSetting.h1') }}
         </h1>
-        <div class="flex gap-2">
-            <Button @click="goToIndex">
-                {{ translate('global.back') }}
+        <div class="flex gap-2 justify-end">
+            <Button size="small" @click="goToCreate">
+                <i class="pi pi-plus"></i> {{ translate('global.create') }}
             </Button>
-            <Button @click="goToCreate">
-                {{ translate('global.create') }}
+            <Button size="small" @click="goToIndex">
+                <i class="pi pi-times"></i> {{ translate('global.back') }}
             </Button>
         </div>
         <div>
@@ -30,19 +30,6 @@
                     <Column field="protocol" header="protocol"></Column>
                     <Column field="active" header="active"></Column>
                 </MainDataTable>
-<!--                <DataTable :value="dataTableData.data" tableStyle="min-width: 50rem">-->
-<!--                    <Column field="id" header="id"></Column>-->
-<!--                    <Column field="name" header="name"></Column>-->
-<!--                    <Column field="type" header="type"></Column>-->
-<!--                    <Column field="host" header="host"></Column>-->
-<!--                    <Column field="port" header="port"></Column>-->
-<!--                    <Column field="encryption" header="encryption"></Column>-->
-<!--                    <Column field="validate_cert" header="validate_cert"></Column>-->
-<!--                    <Column field="username" header="username"></Column>-->
-<!--                    <Column field="password" header="password"></Column>-->
-<!--                    <Column field="protocol" header="protocol"></Column>-->
-<!--                    <Column field="active" header="active"></Column>-->
-<!--                </DataTable>-->
             </div>
         </div>
     </div>

@@ -28,7 +28,7 @@ const items = computed(() => [
     },
     {
         label: translate('modules.nav.dashboard'),
-        icon: 'pi pi-home',
+        icon: 'pi pi-globe',
         command: () => {
             router.get(route('dashboard'));
         },

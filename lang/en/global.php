@@ -10,5 +10,6 @@ return [
     'sort_oldest' => 'Oldest',
 
     'create' => 'Create',
+    'save' => 'Save',
     'update' => 'Update'
 ];
