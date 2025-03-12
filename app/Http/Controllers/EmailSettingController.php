@@ -68,6 +68,16 @@ class EmailSettingController extends Controller
             'protocols' => collect(EmailSetting::getProtocols())->map(fn($protocol) => ['code' => $protocol, 'name' => $protocol]),
         ];
     }
+
+    public function checkConnection(EmailSetting $emailSetting): RedirectResponse
+    {
+        try {
+            $this->emailSettingService->checkConnection($emailSetting);
+            return back()->with('success', 'Connection successful');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Connection failed: ' . $e->getMessage());
+        }
+    }
 //    public function show(EmailSetting $emailSetting): JsonResponse
 //    {
 //        $emailSetting = $this->emailSettingService->show($emailSetting);
@@ -101,12 +111,4 @@ class EmailSettingController extends Controller
 //        ]);
 //    }
 //
-//    public function checkConnection(EmailSetting $emailSetting): JsonResponse
-//    {
-//        $this->emailSettingService->checkConnection($emailSetting);
-//
-//        return response()->json([
-//            'message' => 'success!',
-//        ]);
-//    }
 }

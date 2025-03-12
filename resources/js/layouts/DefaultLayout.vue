@@ -125,30 +125,38 @@ const locales = computed(() => {
 });
 
 watch(
-    () => page.props.flash.success,
-    (newSuccess) => {
-        if (newSuccess) {
+    () => page.props.flash,
+    (newFlash) => {
+        if (newFlash?.success) {
             toast.add({
                 severity: 'success',
-                summary: newSuccess,
-                life: 5000
+                summary: newFlash.success,
+                life: 5000,
             });
         }
-    }
-);
-
-watch(
-    () => page.props.flash.error,
-    (newError) => {
-        if (newError) {
+        if (newFlash?.error) {
             toast.add({
                 severity: 'error',
-                summary: newError,
-                life: 5000
+                summary: newFlash.error,
+                life: 5000,
             });
         }
-    }
+    },
 );
+
+// watch(
+//     page.props.flash.error,
+//     (newError) => {
+//         if (newError) {
+//             toast.add({
+//                 severity: 'error',
+//                 summary: newError,
+//                 life: 5000
+//             });
+//             // page.props.flash.error = false;
+//         }
+//     }
+// );
 
 
 // scroll to top start
@@ -207,27 +215,6 @@ onUnmounted(() => {
                 </template>
             </Menubar>
         </header>
-        <div class="container mx-auto p-4 py-0">
-            <div
-                v-if="showSuccess"
-                class="bg-green-200 text-green-700 p-3 px-4 rounded flex justify-between"
-            >
-                <div>{{ $page?.props?.flash?.success }}</div>
-                <div @click="showSuccess = false">
-                    <i class="pi pi-times cursor-pointer"></i>
-                </div>
-            </div>
-
-            <div
-                v-if="showError"
-                class="bg-red-200 px-6 text-red-700 p-2 rounded flex justify-between"
-            >
-                <div>{{ $page?.props?.flash?.error }}</div>
-                <div @click="showError = false">
-                    <i class="pi pi-times cursor-pointer"></i>
-                </div>
-            </div>
-        </div>
         <article>
             <slot/>
         </article>

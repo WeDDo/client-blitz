@@ -4,6 +4,9 @@
             {{ translate('modules.emailSetting.h1') }}
         </h1>
         <div class="flex gap-2 justify-end">
+            <Button size="small" :severity="connectionSeverity" @click="checkConnection">
+                <i class="pi pi-check"></i> {{ translate('global.check_connection') }}
+            </Button>
             <Button size="small" @click="handleUpdate">
                 <i class="pi pi-save"></i> {{ translate('global.save') }}
             </Button>
@@ -33,6 +36,7 @@ const page = usePage();
 const {translate} = useTranslation();
 const {schema, initialValues} = useFormValidation();
 
+const connectionSeverity = ref('secondary');
 const isLoading = ref(false);
 
 const form = useForm({
@@ -52,7 +56,23 @@ const handleUpdate = form.handleSubmit((values) => {
     });
 });
 
-function goToIndex() {
+const goToIndex = () => {
     router.get(route('modules.email-settings.index'));
 }
+
+const checkConnection = () => {
+    router.get(route('modules.email-settings.check-connection', form.values.id), {}, {
+        preserveState: true,
+        onSuccess: (response) => {
+            if(response.props.flash.success) {
+                connectionSeverity.value = 'success';
+            } else {
+                connectionSeverity.value = 'danger';
+
+            }
+            console.log()
+
+        },
+    });
+};
 </script>
