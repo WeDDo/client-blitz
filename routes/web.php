@@ -45,6 +45,9 @@ Route::middleware('auth.check')->group(function () {
     Route::get('email-settings/{emailSetting}', [EmailSettingController::class, 'show'])
         ->name('modules.email-settings.show');
 
+    Route::get('email-settings/{emailSetting}/check-connection', [EmailSettingController::class, 'checkConnection'])
+        ->name('modules.email-settings.check-connection');
+
     Route::post('email-settings', [EmailSettingController::class, 'store'])
         ->name('modules.email-settings.store');
     Route::put('email-settings/{emailSetting}', [EmailSettingController::class, 'update'])

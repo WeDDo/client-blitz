@@ -1,5 +1,6 @@
 <script setup>
 import {router} from "@inertiajs/vue3";
+import {ref} from "vue";
 import {route} from "ziggy-js";
 
 const props = defineProps({
@@ -12,6 +13,8 @@ const props = defineProps({
         default: null,
     },
 });
+
+const selection = ref([]);
 
 const dataTableData = defineModel('dataTableData');
 
@@ -27,15 +30,19 @@ function handleRowDblClick(item) {
 <template>
     <div>
         <DataTable
+            v-model:selection="selection"
+            data-key="id"
+            selection-mode="multiple"
+            meta-key-selection
             :value="dataTableData.data"
             tableStyle="min-width: 50rem"
             scrollable
             scroll-height="500px"
             @row-dblclick="handleRowDblClick"
         >
+            <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
             <slot></slot>
         </DataTable>
-
         <div
             v-if="props.paginate"
             class="flex justify-end mt-2"

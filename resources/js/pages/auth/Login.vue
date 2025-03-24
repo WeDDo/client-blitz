@@ -6,6 +6,7 @@ import {ref} from "vue";
 import * as yup from "yup";
 import {route} from "ziggy-js";
 import MainInputText from "../../components/main/MainInputText.vue";
+import MainPassword from "../../components/main/MainPassword.vue";
 import {useTranslation} from "../../composables/useTranslation.js";
 
 const page = usePage();
@@ -45,7 +46,9 @@ const login = form.handleSubmit((values) => {
     isLoading.value = true;
     router.post(route('auth.login'), form.values, {
         preserveState: true,
-        onFinish: () => isLoading.value = false,
+        onFinish: () => {
+            isLoading.value = false
+        },
         onError: (errors) => {
             form.setErrors(errors);
         }
@@ -69,7 +72,7 @@ const login = form.handleSubmit((values) => {
                         required
                         :errors="form.errors"
                     />
-                    <MainInputText
+                    <MainPassword
                         v-model:value="password"
                         name="password"
                         :label="translate(`${mainTranslate}.password`)"

@@ -6,6 +6,7 @@ use App\Models\EmailSetting;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Crypt;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Throwable;
 use Webklex\IMAP\Facades\Client;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 
@@ -58,28 +59,26 @@ class EmailSettingService
         return $newEmailSetting;
     }
 
-    public function checkConnection(EmailSetting $emailSetting): void
+    public function checkConnection(EmailSetting $emailSetting): bool
     {
         if ($emailSetting->protocol === EmailSetting::$imapProtocol) {
             $this->checkImapConnection($emailSetting);
         } elseif ($emailSetting->protocol === EmailSetting::$smtpProtocol) {
             $this->checkSmtpConnection($emailSetting);
         } else {
-            throw new HttpResponseException(
-                response()->json(['error' => 'unsupported_protocol'], 400)
-            );
+            throw new \Exception('unsupported_protocol', 400);
         }
+
+        return true;
     }
 
     public function checkImapConnection(EmailSetting $emailSetting): void
     {
-        $client = Client::make($this->setImapEmailConfig($emailSetting));
         try {
+            $client = Client::make($this->setImapEmailConfig($emailSetting));
             $client->connect();
-        } catch (ConnectionFailedException $e) {
-            throw new HttpResponseException(
-                response()->json(['error' => 'imap_connection_failed'], 401)
-            );
+        } catch (Throwable $e) {
+            throw new \Exception('Imap check failed', 400);
         }
     }
 
@@ -98,11 +97,8 @@ class EmailSettingService
 
         try {
             $transport->start();
-
-        } catch (\Exception $e) {
-            throw new HttpResponseException(
-                response()->json(['error' => 'smtp_connection_failed', 'message' => $e->getMessage()], 401)
-            );
+        } catch (Throwable) {
+            throw new \Exception('Smtp check failed', 400);
         }
     }
 
@@ -118,7 +114,7 @@ class EmailSettingService
                 'host' => $emailSetting->host,
                 'port' => $emailSetting->port,
                 'encryption' => $emailSetting->encryption,
-                'validate_cert' => $emailSetting->validate_cert,
+                'validate_cert' => true,
                 'username' => $emailSetting->username,
                 'password' => Crypt::decryptString($emailSetting->password),
                 'protocol' => $emailSetting->protocol,

@@ -6,6 +6,7 @@ import {ref} from "vue";
 import * as yup from "yup";
 import {route} from "ziggy-js";
 import MainInputText from "../../components/main/MainInputText.vue";
+import MainPassword from "../../components/main/MainPassword.vue";
 import {useTranslation} from "../../composables/useTranslation.js";
 
 const page = usePage();
@@ -86,14 +87,14 @@ const login = form.handleSubmit((values) => {
                         required
                         :errors="form.errors"
                     />
-                    <MainInputText
+                    <MainPassword
                         v-model:value="password"
                         name="password"
                         :label="translate(`${mainTranslate}.password`)"
                         required
                         :errors="form.errors"
                     />
-                    <MainInputText
+                    <MainPassword
                         v-model:value="passwordConfirmation"
                         name="password_confirmation"
                         :label="translate(`${mainTranslate}.password_confirmation`)"

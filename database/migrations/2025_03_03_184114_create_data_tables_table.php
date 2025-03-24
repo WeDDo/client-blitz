@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->json('filters')->nullable();
-            $table->json('sorting')->nullable();
-            $table->json('selected_columns')->nullable();
+            $table->unsignedInteger('page')->default(1);
+//            $table->json('filters')->nullable();
+//            $table->json('sorting')->nullable();
+//            $table->json('selected_columns')->nullable();
 
             $table->foreignId('user_id')
                 ->constrained('users')

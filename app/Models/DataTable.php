@@ -9,9 +9,10 @@ class DataTable extends Model
 {
     protected $fillable = [
         'name',
-        'filters',
-        'sorting',
-        'selected_columns',
+        'page',
+//        'filters',
+//        'sorting',
+//        'selected_columns',
         'user_id',
     ];
 

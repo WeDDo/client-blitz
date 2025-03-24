@@ -11,5 +11,9 @@ return [
 
     'create' => 'Create',
     'save' => 'Save',
-    'update' => 'Update'
+    'update' => 'Update',
+
+    'check_connection' => 'Check connection',
+
+    'server_error' => 'Server error',
 ];
