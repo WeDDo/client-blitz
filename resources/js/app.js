@@ -3,6 +3,7 @@ import '../css/app.css';
 // import {Form} from "@primevue/forms";
 import {definePreset} from "@primevue/themes";
 import {createPinia} from "pinia";
+import {Password} from "primevue";
 import {Paginator} from "primevue";
 import {Column} from "primevue";
 import {DataTable} from "primevue";
@@ -136,6 +137,7 @@ createInertiaApp({
             .component('DeferredContent', DeferredContent)
             .component('Select', Select)
             .component('Badge', Badge)
+            .component('Password', Password)
             .component('Card', Card)
             .component('Toast', Toast)
             .component('DataTable', DataTable)

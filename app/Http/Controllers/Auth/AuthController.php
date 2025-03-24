@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegistrationRequest;
 use App\Services\Auth\AuthService;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\ValidationException;
 use Inertia\Response;
 
 class AuthController extends Controller
@@ -26,12 +28,22 @@ class AuthController extends Controller
             'main' => [
                 'translate' => $this->loginTranslate,
             ]
-        ])->with('error', 'Garaž');
+        ]);
     }
 
     public function login(LoginRequest $request): RedirectResponse
     {
-        $this->authService->login($request->validated());
+        try {
+            $this->authService->login($request->validated());
+        } catch (AuthenticationException $exception) {
+            return redirect()
+                ->back()
+                ->with('error', $exception->getMessage());
+        } catch (\Throwable) {
+            return redirect()
+                ->back()
+                ->with('error', __('global.server_error'));
+        }
 
         return redirect()->route('home');
     }

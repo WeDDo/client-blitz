@@ -8,4 +8,6 @@ return [
 
     'sort_newest' => 'Naujausi',
     'sort_oldest' => 'Seniausi',
+
+    'server_error' => 'Serverio klaida',
 ];

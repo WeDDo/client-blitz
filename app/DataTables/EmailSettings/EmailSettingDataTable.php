@@ -11,25 +11,14 @@ class EmailSettingDataTable extends BaseDataTable
 {
     public function getData(): LengthAwarePaginator
     {
+        $sessionKey = "datatable_page_$this->name";
         $page = request('page');
-        if (!$page) {
-            $dataTable = DataTable::query()
-                ->where('name', $this->name)
-                ->where('user_id', auth()->id())
-                ->first();
 
-            $page = $dataTable->page ?? 1;
+        if (!$page) {
+            $page = session($sessionKey, 1);
         }
 
-        DataTable::query()->updateOrCreate(
-                [
-                    'name' => $this->name,
-                    'user_id' => auth()->id(),
-                ],
-                [
-                    'page' => $page,
-                ]
-            );
+        session([$sessionKey => $page]);
 
         return User::query()
             ->find(auth()->id())

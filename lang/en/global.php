@@ -14,4 +14,6 @@ return [
     'update' => 'Update',
 
     'check_connection' => 'Check connection',
+
+    'server_error' => 'Server error',
 ];
