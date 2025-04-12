@@ -78,6 +78,7 @@ class EmailSettingService
             $client = Client::make($this->setImapEmailConfig($emailSetting));
             $client->connect();
         } catch (Throwable $e) {
+            dd($e);
             throw new \Exception('Imap check failed', 400);
         }
     }
@@ -106,7 +107,7 @@ class EmailSettingService
     {
         $user = auth()->user();
         if (!$emailSetting) {
-            $emailSetting = $user->activeImapEmailSetting()->first();
+            $emailSetting = $user->emailSettings()->where('protocol', EmailSetting::$imapProtocol)->first();
         }
 
         config([

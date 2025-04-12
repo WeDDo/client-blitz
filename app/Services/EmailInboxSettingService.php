@@ -11,46 +11,22 @@ class EmailInboxSettingService
 {
     public function store(array $data): EmailInboxSetting
     {
-//        if (strtoupper($data['name']) === 'INBOX' && EmailInboxSetting::where('name', $data['name'])->exists()) {
-//            throw new HttpResponseException(
-//                response()->json([
-//                    'error' => 'INBOX is already created!',
-//                ], 400)
-//            );
-//        }
-
         return EmailInboxSetting::query()->create($data);
     }
 
     public function update(array $data, EmailInboxSetting $emailInboxSetting): void
     {
-//        if (strtoupper($emailInboxSetting->name) === 'INBOX' && strtoupper($data['name']) !== 'INBOX') {
-//            throw new HttpResponseException(
-//                response()->json([
-//                    'error' => 'This inbox name cannot be changed!',
-//                ], 400)
-//            );
-//        }
-
         $emailInboxSetting->update($data);
     }
 
     public function destroy(EmailInboxSetting $emailInboxSetting): void
     {
-//        if (strtoupper($emailInboxSetting->name) === 'INBOX') {
-//            throw new HttpResponseException(
-//                response()->json([
-//                    'error' => 'The INBOX setting cannot be deleted!',
-//                ], 400)
-//            );
-//        }
-
         $emailInboxSetting->delete();
     }
 
     public function getInboxesImap(): array
     {
-        if (!auth()->user()->activeImapEmailSetting()->first()) {
+        if (!auth()->user()->emailSettings()->first()) {
             return [[], []];
         }
 
@@ -105,6 +81,7 @@ class EmailInboxSettingService
                 $this->store([
                     'name' => $inbox['name'],
                     'read_from_inbox_name' => $inbox['name'],
+                    'email_setting_id' => auth()->user()->emailSettings()->first()?->id
                 ]);
             }
         });

@@ -3,6 +3,7 @@ import {usePage} from "@inertiajs/vue3";
 import {useTranslation} from "../../../composables/useTranslation.js";
 import MainCheckbox from "../../main/MainCheckbox.vue";
 import MainInputText from "../../main/MainInputText.vue";
+import MainPassword from "../../main/MainPassword.vue";
 import MainSelect from "../../main/MainSelect.vue";
 
 const page = usePage();
@@ -77,7 +78,7 @@ const [active] = form.value.defineField('active');
                     required
                     :errors="form.errors"
                 />
-                <MainInputText
+                <MainPassword
                     v-model:value="password"
                     name="password"
                     :label="translate('modules.emailSetting.password')"

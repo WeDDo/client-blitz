@@ -66,14 +66,16 @@ Route::middleware('auth.check')->group(function () {
         Route::post('', [EmailInboxSettingController::class, 'store'])
             ->name('modules.email-inbox-settings.store');
 
+        Route::get('get-inboxes-imap', [EmailInboxSettingController::class, 'getInboxesImap'])
+            ->name('modules.email-inbox-settings.import-index');
+        Route::post('create-inboxes', [EmailInboxSettingController::class, 'createInboxes'])
+            ->name('modules.email-inbox-settings.create-inboxes');
+
         Route::prefix('{emailInboxSetting}')->group(function () {
             Route::get('', [EmailInboxSettingController::class, 'show'])
                 ->name('modules.email-inbox-settings.show');
             Route::put('', [EmailInboxSettingController::class, 'update'])
                 ->name('modules.email-inbox-settings.update');
-
-            Route::get('get-inboxes-imap', [EmailInboxSettingController::class, 'getInboxesImap']);
-            Route::post('create-inboxes', [EmailInboxSettingController::class, 'createInboxes']);
         });
     });
 });

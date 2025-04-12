@@ -35,6 +35,7 @@ const value = defineModel('value');
                 :id="props.name"
                 :name="props.name"
                 fluid
+                toggle-mask
                 :feedback="false"
                 :invalid="!!props.errors?.value?.[props.name]"
             />

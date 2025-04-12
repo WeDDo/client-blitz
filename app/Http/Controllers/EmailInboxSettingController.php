@@ -37,8 +37,7 @@ class EmailInboxSettingController extends Controller
     public function store(EmailInboxSettingRequest $request): RedirectResponse
     {
         $this->emailInboxSettingService->store($request->validated());
-        return redirect()->route('modules.email-inbox-settings.index')
-            ->with('success', 'created_successfully');
+        return redirect()->route('modules.email-inbox-settings.index');
     }
 
     public function show(EmailInboxSetting $emailInboxSetting): Response
@@ -70,14 +69,17 @@ class EmailInboxSettingController extends Controller
         ];
     }
 
-    public function getInboxesImap(): JsonResponse
+    public function getInboxesImap(): Response
     {
-        return response()->json($this->emailInboxSettingService->getInboxesImap());
+        return inertia('modules/email-inbox-settings/import-index', [
+            'data' => $this->emailInboxSettingService->getInboxesImap(),
+        ]);
     }
 
-    public function createInboxes(): JsonResponse
+    public function createInboxes(): RedirectResponse
     {
         $this->emailInboxSettingService->createInboxes(request()->all());
-        return response()->json([], 201);
+
+        return redirect()->route('modules.email-inbox-settings.index');
     }
 }

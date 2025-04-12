@@ -4,6 +4,9 @@
             {{ translate('modules.emailInboxSetting.h1') }}
         </h1>
         <div class="flex gap-2 justify-end">
+            <Button size="small" @click="goToImportIndex">
+                <i class="pi pi-plus"></i> {{ translate('global.go_to_import_index') }}
+            </Button>
             <Button size="small" @click="goToCreate">
                 <i class="pi pi-plus"></i> {{ translate('global.create') }}
             </Button>
@@ -49,6 +52,10 @@ function goToIndex() {
 
 function goToCreate() {
     router.get(route('modules.email-inbox-settings.create'));
+}
+
+function goToImportIndex() {
+    router.get(route('modules.email-inbox-settings.import-index'));
 }
 
 async function fetchData(event = null) {
