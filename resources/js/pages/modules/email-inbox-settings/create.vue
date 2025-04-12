@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto p-4">
         <h1 class="text-2xl mb-4">
-            {{ translate('modules.emailSetting.h1') }}
+            {{ translate('modules.emailInboxSetting.h1') }}
         </h1>
         <div class="flex gap-2 justify-end">
             <Button size="small" @click="handleCreate">
@@ -25,8 +25,8 @@ import {usePage} from "@inertiajs/vue3";
 import {useForm} from "vee-validate";
 import {ref} from "vue";
 import {route} from "ziggy-js";
-import MainForm from "../../../components/modules/email-settings/MainForm.vue";
-import {useFormValidation} from "../../../composables/modules/email-settings/useFormValidation.js";
+import MainForm from "../../../components/modules/email-inbox-settings/MainForm.vue";
+import {useFormValidation} from "../../../composables/modules/email-inbox-settings/useFormValidation.js";
 import {useTranslation} from "../../../composables/useTranslation.js";
 
 const page = usePage();
@@ -42,7 +42,7 @@ const form = useForm({
 
 const handleCreate = form.handleSubmit((values) => {
     isLoading.value = true;
-    router.post(route('modules.email-settings.store'), values, {
+    router.post(route('modules.email-inbox-settings.store'), values, {
         onFinish: () => {
             isLoading.value = false;
         },
@@ -53,6 +53,6 @@ const handleCreate = form.handleSubmit((values) => {
 });
 
 function goToIndex() {
-    router.get(route('modules.email-settings.index'));
+    router.get(route('modules.email-inbox-settings.index'));
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto p-4">
         <h1 class="text-2xl mb-4">
-            {{ translate('modules.emailSetting.h1') }}
+            {{ translate('modules.emailInboxSetting.h1') }}
         </h1>
         <div class="flex gap-2 justify-end">
             <Button size="small" @click="goToCreate">
@@ -15,20 +15,11 @@
             <div class="card mt-5">
                 <MainDataTable
                     v-model:data-table-data="dataTableData"
-                    :edit-route-fn="(item) => route('modules.email-settings.show', { emailSetting: item.data.id })"
+                    :edit-route-fn="(item) => getShowRoute(item)"
                     @refresh="fetchData"
                 >
                     <Column field="id" header="id"></Column>
                     <Column field="name" header="name"></Column>
-                    <Column field="type" header="type"></Column>
-                    <Column field="host" header="host"></Column>
-                    <Column field="port" header="port"></Column>
-                    <Column field="encryption" header="encryption"></Column>
-<!--                    <Column field="validate_cert" header="validate_cert"></Column>-->
-                    <Column field="username" header="username"></Column>
-<!--                    <Column field="password" header="password"></Column>-->
-                    <Column field="protocol" header="protocol"></Column>
-<!--                    <Column field="active" header="active"></Column>-->
                 </MainDataTable>
             </div>
         </div>
@@ -48,16 +39,20 @@ const {translate} = useTranslation();
 
 const dataTableData = ref(page.props.data_table);
 
+function getShowRoute(item) {
+    return route('modules.email-inbox-settings.show', { emailInboxSetting: item.data.id });
+}
+
 function goToIndex() {
     router.get(route('dashboard'));
 }
 
 function goToCreate() {
-    router.get(route('modules.email-settings.create'));
+    router.get(route('modules.email-inbox-settings.create'));
 }
 
 async function fetchData(event = null) {
-    router.get(route("modules.email-settings.index"), {page: event.page + 1}, {
+    router.get(route("modules.email-inbox-settings.index"), {page: event.page + 1}, {
         preserveState: true,
         replace: true,
         only: ['data_table'],

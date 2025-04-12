@@ -9,4 +9,5 @@ return [
 
     'emails' => 'Emails',
     'email_settings' => 'Email settings',
+    'email_inbox_settings' => 'Email inbox settings',
 ];

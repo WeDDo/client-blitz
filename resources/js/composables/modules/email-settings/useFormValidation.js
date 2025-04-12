@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import * as yup from "yup";
-import {useTranslation} from "../useTranslation.js";
+import {useTranslation} from "../../useTranslation.js";
 
 export function useFormValidation() {
     const page = usePage();
