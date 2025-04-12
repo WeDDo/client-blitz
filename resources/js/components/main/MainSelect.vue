@@ -53,10 +53,11 @@ const emit = defineEmits([
         <Select
             v-model="value"
             :options="options"
-            option-value="code"
+            option-value="id"
             option-label="name"
             :maxSelectedLabels="5"
             fluid
+            filter
             placeholder="-"
             :size="size"
             :show-clear="showClear"

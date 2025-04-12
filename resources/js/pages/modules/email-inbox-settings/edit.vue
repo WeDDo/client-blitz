@@ -1,12 +1,9 @@
 <template>
     <div class="container mx-auto p-4">
         <h1 class="text-2xl mb-4">
-            {{ translate('modules.emailSetting.h1') }}
+            {{ translate('modules.emailInboxSetting.h1') }}
         </h1>
         <div class="flex gap-2 justify-end">
-            <Button size="small" :severity="connectionSeverity" @click="checkConnection">
-                <i class="pi pi-check"></i> {{ translate('global.check_connection') }}
-            </Button>
             <Button size="small" @click="handleUpdate">
                 <i class="pi pi-save"></i> {{ translate('global.save') }}
             </Button>
@@ -28,15 +25,14 @@ import {usePage} from "@inertiajs/vue3";
 import {useForm} from "vee-validate";
 import {ref} from "vue";
 import {route} from "ziggy-js";
-import MainForm from "../../../components/modules/email-settings/MainForm.vue";
-import {useFormValidation} from "../../../composables/modules/email-settings/useFormValidation.js";
+import MainForm from "../../../components/modules/email-inbox-settings/MainForm.vue";
+import {useFormValidation} from "../../../composables/modules/email-inbox-settings/useFormValidation.js";
 import {useTranslation} from "../../../composables/useTranslation.js";
 
 const page = usePage();
 const {translate} = useTranslation();
 const {schema, initialValues} = useFormValidation();
 
-const connectionSeverity = ref('secondary');
 const isLoading = ref(false);
 
 const form = useForm({
@@ -46,7 +42,7 @@ const form = useForm({
 
 const handleUpdate = form.handleSubmit((values) => {
     isLoading.value = true;
-    router.put(route('modules.email-settings.update', {emailSetting: values.id}), form.values, {
+    router.put(route('modules.email-inbox-settings.update', {emailInboxSetting: values.id}), form.values, {
         onFinish: () => {
             isLoading.value = false;
         },
@@ -57,22 +53,6 @@ const handleUpdate = form.handleSubmit((values) => {
 });
 
 const goToIndex = () => {
-    router.get(route('modules.email-settings.index'));
+    router.get(route('modules.email-inbox-settings.index'));
 }
-
-const checkConnection = () => {
-    router.get(route('modules.email-settings.check-connection', form.values.id), {}, {
-        preserveState: true,
-        onSuccess: (response) => {
-            if(response.props.flash.success) {
-                connectionSeverity.value = 'success';
-            } else {
-                connectionSeverity.value = 'danger';
-
-            }
-            console.log()
-
-        },
-    });
-};
 </script>

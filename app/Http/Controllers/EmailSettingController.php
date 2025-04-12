@@ -64,8 +64,8 @@ class EmailSettingController extends Controller
     private function getOptions(): array
     {
         return [
-            'types' => collect(EmailSetting::getTypes())->map(fn($type) => ['code' => $type, 'name' => $type]),
-            'protocols' => collect(EmailSetting::getProtocols())->map(fn($protocol) => ['code' => $protocol, 'name' => $protocol]),
+            'types' => collect(EmailSetting::getTypes())->map(fn($type) => ['id' => $type, 'name' => $type]),
+            'protocols' => collect(EmailSetting::getProtocols())->map(fn($protocol) => ['id' => $protocol, 'name' => $protocol]),
         ];
     }
 

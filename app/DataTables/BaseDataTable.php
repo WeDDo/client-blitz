@@ -5,7 +5,7 @@ namespace App\DataTables;
 abstract class BaseDataTable
 {
     protected string $name;
-    protected int $perPage = 5;
+    protected int $perPage = 2;
 
     public function __construct()
     {

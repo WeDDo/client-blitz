@@ -84,6 +84,12 @@ const items = computed(() => [
                     router.get(route('modules.email-settings.index'));
                 },
             },
+            {
+                label: translate('modules.nav.email_inbox_settings'),
+                command: () => {
+                    router.get(route('modules.email-inbox-settings.index'));
+                },
+            },
         ]
     },
     {
@@ -114,11 +120,11 @@ const setLocale = () => {
 const locales = computed(() => {
     return [
         {
-            code: 'lt',
+            id: 'lt',
             name: translate(`app.locale.locales.lt`)
         },
         {
-            code: 'en',
+            id: 'en',
             name: translate(`app.locale.locales.en`)
         },
     ]
@@ -143,21 +149,6 @@ watch(
         }
     },
 );
-
-// watch(
-//     page.props.flash.error,
-//     (newError) => {
-//         if (newError) {
-//             toast.add({
-//                 severity: 'error',
-//                 summary: newError,
-//                 life: 5000
-//             });
-//             // page.props.flash.error = false;
-//         }
-//     }
-// );
-
 
 // scroll to top start
 const showScrollTop = ref(false);
@@ -199,9 +190,6 @@ onUnmounted(() => {
                 </Menubar>
                 <template #end>
                     <div class="flex items-center gap-5">
-<!--                        <div v-if="isVisible">-->
-<!--                            {{ lastDownloadedFileEvent?.url }}-->
-<!--                        </div>-->
                         <MainSelect
                             v-model:value="locale"
                             name="locale"
@@ -211,7 +199,6 @@ onUnmounted(() => {
                             @change="setLocale"
                         />
                     </div>
-
                 </template>
             </Menubar>
         </header>

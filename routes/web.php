@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\EmailInboxSettingController;
 use App\Http\Controllers\EmailSettingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
@@ -38,20 +39,43 @@ Route::middleware('auth.check')->group(function () {
     Route::get('emails', [EmailController::class, 'index'])
         ->name('modules.emails.index');
 
-    Route::get('email-settings', [EmailSettingController::class, 'index'])
-        ->name('modules.email-settings.index');
-    Route::get('email-settings/create', [EmailSettingController::class, 'create'])
-        ->name('modules.email-settings.create');
-    Route::get('email-settings/{emailSetting}', [EmailSettingController::class, 'show'])
-        ->name('modules.email-settings.show');
+    Route::prefix('email-settings')->group(function () {
+        Route::get('', [EmailSettingController::class, 'index'])
+            ->name('modules.email-settings.index');
+        Route::get('create', [EmailSettingController::class, 'create'])
+            ->name('modules.email-settings.create');
+        Route::post('', [EmailSettingController::class, 'store'])
+            ->name('modules.email-settings.store');
 
-    Route::get('email-settings/{emailSetting}/check-connection', [EmailSettingController::class, 'checkConnection'])
-        ->name('modules.email-settings.check-connection');
 
-    Route::post('email-settings', [EmailSettingController::class, 'store'])
-        ->name('modules.email-settings.store');
-    Route::put('email-settings/{emailSetting}', [EmailSettingController::class, 'update'])
-        ->name('modules.email-settings.update');
+        Route::prefix('{emailSetting}')->group(function () {
+            Route::get('', [EmailSettingController::class, 'show'])
+                ->name('modules.email-settings.show');
+            Route::get('check-connection', [EmailSettingController::class, 'checkConnection'])
+                ->name('modules.email-settings.check-connection');
+            Route::put('', [EmailSettingController::class, 'update'])
+                ->name('modules.email-settings.update');
+        });
+    });
+
+    Route::prefix('email-inbox-settings')->group(function () {
+        Route::get('', [EmailInboxSettingController::class, 'index'])
+            ->name('modules.email-inbox-settings.index');
+        Route::get('create', [EmailInboxSettingController::class, 'create'])
+            ->name('modules.email-inbox-settings.create');
+        Route::post('', [EmailInboxSettingController::class, 'store'])
+            ->name('modules.email-inbox-settings.store');
+
+        Route::prefix('{emailInboxSetting}')->group(function () {
+            Route::get('', [EmailInboxSettingController::class, 'show'])
+                ->name('modules.email-inbox-settings.show');
+            Route::put('', [EmailInboxSettingController::class, 'update'])
+                ->name('modules.email-inbox-settings.update');
+
+            Route::get('get-inboxes-imap', [EmailInboxSettingController::class, 'getInboxesImap']);
+            Route::post('create-inboxes', [EmailInboxSettingController::class, 'createInboxes']);
+        });
+    });
 });
 //Route::get('files', [FileController::class, 'index'])
 //    ->name('files.index');
@@ -68,5 +92,5 @@ Route::middleware('auth.check')->group(function () {
 //Route::post('file-ripper/rip', [FileRipperController::class, 'rip'])
 //    ->name('fileripper.rip');
 
-Route::post('set-locale', [LocaleController::class, 'setLocale'])
-    ->name('set-locale');
+    Route::post('set-locale', [LocaleController::class, 'setLocale'])
+        ->name('set-locale');
