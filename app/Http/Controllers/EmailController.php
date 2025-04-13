@@ -9,7 +9,7 @@ class EmailController extends Controller
 {
     public function index(): Response
     {
-        return inertia('modules/emails/index', [
+        return inertia('modules/email-messages/index', [
             'data_table' => (new EmailSettingDataTable())->getData(),
         ]);
     }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmailInboxSettingController;
+use App\Http\Controllers\EmailMessageController;
 use App\Http\Controllers\EmailSettingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
@@ -36,8 +37,8 @@ Route::middleware('auth.check')->group(function () {
         return inertia('Dashboard');
     })->name('dashboard');
 
-    Route::get('emails', [EmailController::class, 'index'])
-        ->name('modules.emails.index');
+    Route::get('email-messages', [EmailController::class, 'index'])
+        ->name('modules.email-messages.index');
 
     Route::prefix('email-settings')->group(function () {
         Route::get('', [EmailSettingController::class, 'index'])
@@ -82,6 +83,14 @@ Route::middleware('auth.check')->group(function () {
             Route::put('', [EmailInboxSettingController::class, 'update'])
                 ->name('modules.email-inbox-settings.update');
         });
+    });
+
+    Route::prefix('email-messages')->group(function () {
+        Route::get('', [EmailMessageController::class, 'index'])
+            ->name('modules.email-messages.index');
+
+        Route::get('get-emails-using-imap', [EmailMessageController::class, 'getEmailsUsingImap'])
+            ->name('modules.email-messages.get-emails-using-imap');
     });
 });
 //Route::get('files', [FileController::class, 'index'])

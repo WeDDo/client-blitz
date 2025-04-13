@@ -7,7 +7,7 @@ return [
     'dashboard' => 'Dashboard',
     'logout' => 'Logout',
 
-    'emails' => 'Emails',
+    'email-messages' => 'Emails',
     'email_settings' => 'Email settings',
     'email_inbox_settings' => 'Email inbox settings',
 ];

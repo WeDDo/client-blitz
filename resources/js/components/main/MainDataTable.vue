@@ -107,8 +107,9 @@ onMounted(() => {
             selection-mode="multiple"
             meta-key-selection
             :value="dataTableData.data"
-            tableStyle="min-width: 50rem"
             scrollable
+            resizableColumns
+            columnResizeMode="fit"
             @row-dblclick="handleRowDblClick"
         >
             <template #header>
@@ -117,7 +118,7 @@ onMounted(() => {
                         label="Delete"
                         severity="secondary"
                         size="small"
-                        icon="pi pi-external-link"
+                        icon="pi pi-trash"
                         :disabled="selectionIds.length === 0"
                         @click="confirmDelete"
                     />
