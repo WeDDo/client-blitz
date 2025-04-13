@@ -55,7 +55,7 @@ function goToCreate() {
 }
 
 function goToImportIndex() {
-    router.get(route('modules.email-inbox-settings.import-index'));
+    router.get(route('modules.email-inbox-settings.import.index'));
 }
 
 async function fetchData(event = null) {

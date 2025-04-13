@@ -26,11 +26,12 @@ class EmailInboxSettingService
 
     public function getInboxesImap(): array
     {
-        if (!auth()->user()->emailSettings()->first()) {
+        $initialImapEmailSetting = auth()->user()->imapEmailSettings()->first();
+        if (!$initialImapEmailSetting) {
             return [[], []];
         }
 
-        $imapConfig = (new EmailSettingService())->setImapEmailConfig();
+        $imapConfig = (new EmailSettingService())->setImapEmailConfig($initialImapEmailSetting);
 
         $client = Client::make($imapConfig);
         $client->connect();
@@ -42,7 +43,9 @@ class EmailInboxSettingService
             [],
         ];
 
-        $emailInboxSettingNames = auth()->user()->emailInboxSettings()->pluck('name');
+        $emailInboxSettingNames = auth()->user()->emailInboxSettings()->pluck('read_from_inbox_name');
+
+//        dd($emailInboxSettingNames);
 
         foreach ($folderNames as $key => $folderName) {
             if (!$emailInboxSettingNames->contains($folderName)) {
@@ -51,10 +54,12 @@ class EmailInboxSettingService
                     'name' => $folderName,
                 ];
             }
-
         }
 
-        return $formattedFolders;
+        return [
+            'imap_email_setting_id' => $initialImapEmailSetting?->id,
+            'folders' => $formattedFolders,
+        ];
     }
 
     protected function extractMailboxNames(FolderCollection $folders): array
@@ -77,11 +82,11 @@ class EmailInboxSettingService
     public function createInboxes(array $data): void
     {
         DB::transaction(function () use ($data) {
-            foreach ($data[1] as $inbox) {
+            foreach ($data['folders'][1] as $inbox) {
                 $this->store([
                     'name' => $inbox['name'],
                     'read_from_inbox_name' => $inbox['name'],
-                    'email_setting_id' => auth()->user()->emailSettings()->first()?->id
+                    'email_setting_id' => $data['imap_email_setting_id'],
                 ]);
             }
         });

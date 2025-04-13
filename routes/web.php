@@ -66,10 +66,12 @@ Route::middleware('auth.check')->group(function () {
         Route::post('', [EmailInboxSettingController::class, 'store'])
             ->name('modules.email-inbox-settings.store');
 
-        Route::get('get-inboxes-imap', [EmailInboxSettingController::class, 'getInboxesImap'])
-            ->name('modules.email-inbox-settings.import-index');
-        Route::post('create-inboxes', [EmailInboxSettingController::class, 'createInboxes'])
-            ->name('modules.email-inbox-settings.create-inboxes');
+        Route::prefix('import')->group(function() {
+            Route::get('', [EmailInboxSettingController::class, 'importIndex'])
+                ->name('modules.email-inbox-settings.import.index');
+            Route::post('', [EmailInboxSettingController::class, 'importStore'])
+                ->name('modules.email-inbox-settings.import.store');
+        });
 
         Route::prefix('{emailInboxSetting}')->group(function () {
             Route::get('', [EmailInboxSettingController::class, 'show'])

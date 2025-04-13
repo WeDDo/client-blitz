@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\CreateUpdateUserTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EmailInboxSetting extends Model
 {
+    use HasFactory, CreateUpdateUserTrait;
+
     protected $fillable = [
         'name',
         'read_from_inbox_name',

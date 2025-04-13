@@ -52,18 +52,16 @@ class User extends Authenticatable
         return $this->hasMany(EmailSetting::class, 'created_by');
     }
 
-    public function activeSmtpEmailSetting(): HasMany
+    public function smtpEmailSettings(): HasMany
     {
-        return $this->hasMany(EmailSetting::class, 'created_by')
-            ->where('protocol', EmailSetting::$smtpProtocol)
-            ->where('active', true);
+        return $this->emailSettings()
+            ->where('protocol', EmailSetting::$smtpProtocol);
     }
 
-    public function activeImapEmailSetting(): HasMany
+    public function imapEmailSettings(): HasMany
     {
-        return $this->hasMany(EmailSetting::class, 'created_by')
-            ->where('protocol', EmailSetting::$imapProtocol)
-            ->where('active', true);
+        return $this->emailSettings()
+            ->where('protocol', EmailSetting::$imapProtocol);
     }
 
     public function emailMessages(): HasMany
