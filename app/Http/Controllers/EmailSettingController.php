@@ -57,7 +57,7 @@ class EmailSettingController extends Controller
     public function destroy(): RedirectResponse
     {
         $this->emailSettingService->destroy();
-        return back()->with('success', 'Deleted successfully');
+        return back()->with('success', __('global.deleted_successfully'));
     }
 
     private function getOptions(): array
