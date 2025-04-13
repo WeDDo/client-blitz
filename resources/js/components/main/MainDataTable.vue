@@ -2,6 +2,8 @@
 import {router} from "@inertiajs/vue3";
 import {useConfirm} from "primevue";
 import {useToast} from "primevue";
+import {nextTick} from "vue";
+import {onMounted} from "vue";
 import {computed} from "vue";
 import {ref} from "vue";
 import {route} from "ziggy-js";
@@ -16,7 +18,7 @@ const props = defineProps({
         default: null,
     },
     deleteRoute: {
-        type: Object,
+        type: String,
         default: null,
     }
 });
@@ -24,6 +26,7 @@ const props = defineProps({
 const confirm = useConfirm();
 const toast = useToast();
 
+const dataTable = ref();
 const selection = ref([]);
 
 const dataTableData = defineModel('dataTableData');
@@ -64,8 +67,8 @@ function confirmDelete(event) {
             router.delete(props.deleteRoute, {
                 data: { ids: selectionIds.value },
                 onSuccess: () => {
-                    selection.value = [];
                     emit('refresh', { page: newPage - 1 });
+                    selection.value = [];
                 },
                 onError: () => {
                     toast.add({
@@ -84,11 +87,21 @@ function confirmDelete(event) {
 const selectionIds = computed(() =>
     Array.isArray(selection.value) ? selection.value.map(item => item.id) : [],
 );
+
+onMounted(() => {
+    nextTick(() => {
+        const container = dataTable.value?.$el?.querySelector('.p-datatable-table-container')
+        if (container) {
+            container.style.height = '55vh';
+        }
+    })
+})
 </script>
 
 <template>
     <div>
         <DataTable
+            ref="dataTable"
             v-model:selection="selection"
             data-key="id"
             selection-mode="multiple"
@@ -96,7 +109,6 @@ const selectionIds = computed(() =>
             :value="dataTableData.data"
             tableStyle="min-width: 50rem"
             scrollable
-            scroll-height="500px"
             @row-dblclick="handleRowDblClick"
         >
             <template #header>
