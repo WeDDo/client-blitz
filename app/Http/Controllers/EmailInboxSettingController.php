@@ -56,11 +56,11 @@ class EmailInboxSettingController extends Controller
 
     }
 
-//    public function destroy(EmailInboxSetting $emailInboxSetting): JsonResponse
-//    {
-//        $this->emailInboxSettingService->destroy($emailInboxSetting);
-//        return response()->json([], 204);
-//    }
+    public function destroy(): RedirectResponse
+    {
+        $this->emailInboxSettingService->destroy();
+        return back()->with('success', 'Deleted successfully');
+    }
 
     private function getOptions(): array
     {

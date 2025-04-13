@@ -54,12 +54,11 @@ class EmailSettingController extends Controller
         return redirect()->route('modules.email-settings.show', $emailSetting->id);
     }
 
-//    public function destroy(EmailSetting $emailSetting): RedirectResponse
-//    {
-//        $this->emailSettingService->delete($emailSetting);
-//
-//        return redirect()->route('email-settings.index');
-//    }
+    public function destroy(): RedirectResponse
+    {
+        $this->emailSettingService->destroy();
+        return back()->with('success', 'Deleted successfully');
+    }
 
     private function getOptions(): array
     {

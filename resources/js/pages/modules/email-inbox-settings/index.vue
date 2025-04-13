@@ -23,6 +23,7 @@
                 <MainDataTable
                     v-model:data-table-data="dataTableData"
                     :edit-route-fn="(item) => getShowRoute(item)"
+                    :delete-route="route('modules.email-inbox-settings.destroy')"
                     @refresh="fetchData"
                 >
                     <Column field="id" header="id"></Column>
@@ -63,13 +64,6 @@ function goToImportIndex() {
 }
 
 async function fetchData(event = null) {
-    router.get(route("modules.email-inbox-settings.index"), {page: event.page + 1}, {
-        preserveState: true,
-        replace: true,
-        only: ['data_table'],
-        onSuccess: (page) => {
-            dataTableData.value = page.props.data_table;
-        }
-    });
+    router.get(route("modules.email-inbox-settings.index"), {page: event.page + 1});
 }
 </script>

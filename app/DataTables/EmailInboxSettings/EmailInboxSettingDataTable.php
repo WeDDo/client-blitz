@@ -22,6 +22,7 @@ class EmailInboxSettingDataTable extends BaseDataTable
         session([$sessionKey => $page]);
 
         return EmailInboxSetting::query()
+            ->orderBy('name', 'desc')
             ->orderBy('created_at', 'desc')
             ->paginate($this->perPage, page: $page);
     }

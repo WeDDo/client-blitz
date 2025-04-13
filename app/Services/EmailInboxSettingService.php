@@ -20,9 +20,13 @@ class EmailInboxSettingService
         $emailInboxSetting->update($data);
     }
 
-    public function destroy(EmailInboxSetting $emailInboxSetting): void
+    public function destroy(): void
     {
-        $emailInboxSetting->delete();
+        EmailInboxSetting::query()
+            ->whereIn('id', request('ids'))
+            ->each(function ($emailInboxSetting) {
+                $emailInboxSetting->delete();
+            });
     }
 
     public function importIndex(): array

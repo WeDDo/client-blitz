@@ -41,6 +41,15 @@ class EmailSettingService
         $this->checkActiveEmailSettings($data, $emailSetting);
     }
 
+    public function destroy(): void
+    {
+        EmailSetting::query()
+            ->whereIn('id', request('ids'))
+            ->each(function ($emailSetting) {
+                $emailSetting->delete();
+            });
+    }
+
     public function checkActiveEmailSettings(array $data, EmailSetting $emailSetting): void
     {
         if (isset($data['active']) && $data['active']) {

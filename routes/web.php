@@ -46,7 +46,8 @@ Route::middleware('auth.check')->group(function () {
             ->name('modules.email-settings.create');
         Route::post('', [EmailSettingController::class, 'store'])
             ->name('modules.email-settings.store');
-
+        Route::delete('destroy', [EmailSettingController::class, 'destroy'])
+            ->name('modules.email-settings.destroy');
 
         Route::prefix('{emailSetting}')->group(function () {
             Route::get('', [EmailSettingController::class, 'show'])
@@ -65,6 +66,8 @@ Route::middleware('auth.check')->group(function () {
             ->name('modules.email-inbox-settings.create');
         Route::post('', [EmailInboxSettingController::class, 'store'])
             ->name('modules.email-inbox-settings.store');
+        Route::delete('destroy', [EmailInboxSettingController::class, 'destroy'])
+            ->name('modules.email-inbox-settings.destroy');
 
         Route::prefix('import')->group(function() {
             Route::get('', [EmailInboxSettingController::class, 'importIndex'])

@@ -3,6 +3,8 @@ import '../css/app.css';
 // import {Form} from "@primevue/forms";
 import {definePreset} from "@primevue/themes";
 import {createPinia} from "pinia";
+import {ConfirmationService} from "primevue";
+import {ConfirmPopup} from "primevue";
 import {PickList} from "primevue";
 import {Password} from "primevue";
 import {Paginator} from "primevue";
@@ -111,6 +113,7 @@ createInertiaApp({
             .use(plugin)
             .use(pinia)
             .use(ToastService)
+            .use(ConfirmationService)
             .use(ZiggyVue, Ziggy)
             .use(PrimeVue, {
                 theme: {
@@ -120,6 +123,16 @@ createInertiaApp({
                             order: 'tailwind-base, primevue, tailwind-utilities'
                         }
                     })
+                },
+                pt: {
+                    datatable: {
+                        header: {
+                            style: {
+                                paddingLeft: '0',
+                                paddingRight: '0'
+                            }
+                        }
+                    }
                 }
             })
             .component('Button', Button)
@@ -144,6 +157,7 @@ createInertiaApp({
             .component('DataTable', DataTable)
             .component('Column', Column)
             .component('PickList', PickList)
+            .component('ConfirmPopup', ConfirmPopup)
             .directive('tooltip', Tooltip)
             .directive('ripple', Ripple)
             .mount(el)

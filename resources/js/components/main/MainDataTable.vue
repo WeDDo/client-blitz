@@ -1,5 +1,8 @@
 <script setup>
 import {router} from "@inertiajs/vue3";
+import {useConfirm} from "primevue";
+import {useToast} from "primevue";
+import {computed} from "vue";
 import {ref} from "vue";
 import {route} from "ziggy-js";
 
@@ -12,7 +15,14 @@ const props = defineProps({
         type: Function,
         default: null,
     },
+    deleteRoute: {
+        type: Object,
+        default: null,
+    }
 });
+
+const confirm = useConfirm();
+const toast = useToast();
 
 const selection = ref([]);
 
@@ -30,6 +40,50 @@ function handlePageChange(event) {
     selection.value = null;
     emit('refresh', event)
 }
+
+function confirmDelete(event) {
+    confirm.require({
+        target: event.currentTarget,
+        message: 'Do you want to delete this record?',
+        icon: 'pi pi-info-circle',
+        rejectProps: {
+            label: 'Cancel',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Delete',
+            severity: 'danger'
+        },
+        accept: () => {
+            const currentPage = dataTableData.value.current_page;
+            const remainingItems = dataTableData.value.data.length - selectionIds.value.length;
+            const shouldGoToPrevPage = remainingItems <= 0 && currentPage > 1;
+            const newPage = shouldGoToPrevPage ? currentPage - 1 : currentPage;
+
+            router.delete(props.deleteRoute, {
+                data: { ids: selectionIds.value },
+                onSuccess: () => {
+                    selection.value = [];
+                    emit('refresh', { page: newPage - 1 });
+                },
+                onError: () => {
+                    toast.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Could not delete selected records',
+                        life: 3000
+                    });
+                }
+            });
+        },
+        reject: () => {}
+    });
+};
+
+const selectionIds = computed(() =>
+    Array.isArray(selection.value) ? selection.value.map(item => item.id) : [],
+);
 </script>
 
 <template>
@@ -45,6 +99,18 @@ function handlePageChange(event) {
             scroll-height="500px"
             @row-dblclick="handleRowDblClick"
         >
+            <template #header>
+                <div class="text-end">
+                    <Button
+                        label="Delete"
+                        severity="secondary"
+                        size="small"
+                        icon="pi pi-external-link"
+                        :disabled="selectionIds.length === 0"
+                        @click="confirmDelete"
+                    />
+                </div>
+            </template>
             <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
             <slot></slot>
         </DataTable>
@@ -73,5 +139,6 @@ function handlePageChange(event) {
                 </template>
             </Paginator>
         </div>
+        <ConfirmPopup></ConfirmPopup>
     </div>
 </template>
