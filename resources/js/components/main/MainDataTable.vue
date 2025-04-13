@@ -117,7 +117,7 @@ onMounted(() => {
                         label="Delete"
                         severity="secondary"
                         size="small"
-                        icon="pi pi-external-link"
+                        icon="pi pi-trash"
                         :disabled="selectionIds.length === 0"
                         @click="confirmDelete"
                     />
