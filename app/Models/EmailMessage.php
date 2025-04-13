@@ -42,7 +42,7 @@ class EmailMessage extends Model
     }
 
     /**
-     * Get all replied-to emails in the conversation.
+     * Get all replied-to email-messages in the conversation.
      *
      * @return array
      */

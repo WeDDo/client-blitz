@@ -107,8 +107,9 @@ onMounted(() => {
             selection-mode="multiple"
             meta-key-selection
             :value="dataTableData.data"
-            tableStyle="min-width: 50rem"
             scrollable
+            resizableColumns
+            columnResizeMode="fit"
             @row-dblclick="handleRowDblClick"
         >
             <template #header>

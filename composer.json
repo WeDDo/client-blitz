@@ -12,7 +12,8 @@
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.9",
         "tightenco/ziggy": "^2.5",
-        "webklex/laravel-imap": "^6.1"
+        "webklex/laravel-imap": "^6.1",
+      "ext-imap": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

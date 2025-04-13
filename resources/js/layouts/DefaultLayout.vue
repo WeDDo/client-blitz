@@ -51,7 +51,7 @@ const items = computed(() => [
         visible: !authenticated.value,
     },
     {
-        label: translate('modules.nav.emails'),
+        label: translate('modules.nav.email-messages'),
         icon: 'pi pi-envelope',
         items: [
             // {
@@ -73,9 +73,9 @@ const items = computed(() => [
             //     },
             // },
             {
-                label: translate('modules.nav.emails'),
+                label: translate('modules.nav.email-messages'),
                 command: () => {
-                    router.get(route('modules.emails.index'));
+                    router.get(route('modules.email-messages.index'));
                 },
             },
             {
