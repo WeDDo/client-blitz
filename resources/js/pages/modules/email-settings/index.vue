@@ -16,6 +16,7 @@
                 <MainDataTable
                     v-model:data-table-data="dataTableData"
                     :edit-route-fn="(item) => route('modules.email-settings.show', { emailSetting: item.data.id })"
+                    :delete-route="route('modules.email-settings.destroy')"
                     @refresh="fetchData"
                 >
                     <Column field="id" header="id"></Column>
@@ -58,12 +59,6 @@ function goToCreate() {
 
 async function fetchData(event = null) {
     router.get(route("modules.email-settings.index"), {page: event.page + 1}, {
-        preserveState: true,
-        replace: true,
-        only: ['data_table'],
-        onSuccess: (page) => {
-            dataTableData.value = page.props.data_table;
-        }
     });
 }
 </script>

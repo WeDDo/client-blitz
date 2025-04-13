@@ -94,7 +94,7 @@ const items = computed(() => [
     },
     {
         label: translate('modules.nav.logout'),
-        icon: 'pi pi-plus',
+        icon: 'pi pi-sign-out',
         command: () => {
             router.get(route('auth.logout'));
         },

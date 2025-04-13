@@ -62,12 +62,6 @@ function goToEdit(emailSettingId) {
 
 async function fetchData(event = null) {
     router.get(route("modules.email-settings.index"), {page: event.page + 1}, {
-        preserveState: true,  // Prevents full page reload
-        replace: true,  // Updates the current URL
-        only: ['data_table'],  // Fetch only the data_table to avoid unnecessary updates
-        onSuccess: (page) => {
-            dataTableData.value = page.props.data_table;  // Update the table data
-        }
     });
 }
 </script>

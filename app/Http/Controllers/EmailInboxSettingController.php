@@ -37,8 +37,7 @@ class EmailInboxSettingController extends Controller
     public function store(EmailInboxSettingRequest $request): RedirectResponse
     {
         $this->emailInboxSettingService->store($request->validated());
-        return redirect()->route('modules.email-inbox-settings.index')
-            ->with('success', 'created_successfully');
+        return redirect()->route('modules.email-inbox-settings.index');
     }
 
     public function show(EmailInboxSetting $emailInboxSetting): Response
@@ -57,11 +56,11 @@ class EmailInboxSettingController extends Controller
 
     }
 
-//    public function destroy(EmailInboxSetting $emailInboxSetting): JsonResponse
-//    {
-//        $this->emailInboxSettingService->destroy($emailInboxSetting);
-//        return response()->json([], 204);
-//    }
+    public function destroy(): RedirectResponse
+    {
+        $this->emailInboxSettingService->destroy();
+        return back()->with('success', 'Deleted successfully');
+    }
 
     private function getOptions(): array
     {
@@ -70,14 +69,22 @@ class EmailInboxSettingController extends Controller
         ];
     }
 
-    public function getInboxesImap(): JsonResponse
+    public function importIndex(): Response|RedirectResponse
     {
-        return response()->json($this->emailInboxSettingService->getInboxesImap());
+        try {
+            return inertia('modules/email-inbox-settings/import/index', [
+                'data' => $this->emailInboxSettingService->importIndex(),
+                'options' => auth()->user()->imapEmailSettings,
+            ]);
+        } catch (\Throwable $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
-    public function createInboxes(): JsonResponse
+    public function importStore(): RedirectResponse
     {
-        $this->emailInboxSettingService->createInboxes(request()->all());
-        return response()->json([], 201);
+        $this->emailInboxSettingService->importStore(request()->all());
+
+        return redirect()->route('modules.email-inbox-settings.index');
     }
 }

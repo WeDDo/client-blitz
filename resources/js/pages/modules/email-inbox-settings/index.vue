@@ -4,6 +4,13 @@
             {{ translate('modules.emailInboxSetting.h1') }}
         </h1>
         <div class="flex gap-2 justify-end">
+            <Button
+                severity="secondary"
+                size="small"
+                @click="goToImportIndex"
+            >
+                <i class="pi pi-plus"></i> {{ translate('modules.emailInboxSetting.go_to_import_index') }}
+            </Button>
             <Button size="small" @click="goToCreate">
                 <i class="pi pi-plus"></i> {{ translate('global.create') }}
             </Button>
@@ -16,6 +23,7 @@
                 <MainDataTable
                     v-model:data-table-data="dataTableData"
                     :edit-route-fn="(item) => getShowRoute(item)"
+                    :delete-route="route('modules.email-inbox-settings.destroy')"
                     @refresh="fetchData"
                 >
                     <Column field="id" header="id"></Column>
@@ -51,14 +59,11 @@ function goToCreate() {
     router.get(route('modules.email-inbox-settings.create'));
 }
 
+function goToImportIndex() {
+    router.get(route('modules.email-inbox-settings.import.index'));
+}
+
 async function fetchData(event = null) {
-    router.get(route("modules.email-inbox-settings.index"), {page: event.page + 1}, {
-        preserveState: true,
-        replace: true,
-        only: ['data_table'],
-        onSuccess: (page) => {
-            dataTableData.value = page.props.data_table;
-        }
-    });
+    router.get(route("modules.email-inbox-settings.index"), {page: event.page + 1});
 }
 </script>

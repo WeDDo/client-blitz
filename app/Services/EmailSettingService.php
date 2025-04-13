@@ -41,6 +41,15 @@ class EmailSettingService
         $this->checkActiveEmailSettings($data, $emailSetting);
     }
 
+    public function destroy(): void
+    {
+        EmailSetting::query()
+            ->whereIn('id', request('ids'))
+            ->each(function ($emailSetting) {
+                $emailSetting->delete();
+            });
+    }
+
     public function checkActiveEmailSettings(array $data, EmailSetting $emailSetting): void
     {
         if (isset($data['active']) && $data['active']) {
@@ -72,11 +81,13 @@ class EmailSettingService
         return true;
     }
 
-    public function checkImapConnection(EmailSetting $emailSetting): void
+    public function checkImapConnection(EmailSetting $emailSetting): \Webklex\PHPIMAP\Client
     {
         try {
             $client = Client::make($this->setImapEmailConfig($emailSetting));
             $client->connect();
+
+            return $client;
         } catch (Throwable $e) {
             throw new \Exception('Imap check failed', 400);
         }
@@ -106,7 +117,7 @@ class EmailSettingService
     {
         $user = auth()->user();
         if (!$emailSetting) {
-            $emailSetting = $user->activeImapEmailSetting()->first();
+            $emailSetting = $user->imapEmailSettings()->first();
         }
 
         config([
@@ -128,7 +139,7 @@ class EmailSettingService
     {
         $user = auth()->user();
         if (!$emailSetting) {
-            $emailSetting = $user->activeImapEmailSetting()->first();
+            $emailSetting = $user->smtpEmailSettings()->first();
         }
 
         $config = [
