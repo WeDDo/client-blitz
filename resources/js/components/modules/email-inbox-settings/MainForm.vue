@@ -49,14 +49,6 @@ const [emailInboxSettingId] = form.value.defineField('email_setting_id');
                     required
                     :errors="form.errors"
                 />
-<!--                <MainSelect-->
-<!--                    v-model:value="protocol"-->
-<!--                    name="protocol"-->
-<!--                    :label="translate('modules.emailSetting.protocol')"-->
-<!--                    required-->
-<!--                    :errors="form.errors"-->
-<!--                    :options="page.props.options.protocols"-->
-<!--                />-->
             </div>
         </form>
     </div>
