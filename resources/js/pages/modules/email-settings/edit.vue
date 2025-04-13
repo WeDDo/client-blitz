@@ -68,10 +68,7 @@ const checkConnection = () => {
                 connectionSeverity.value = 'success';
             } else {
                 connectionSeverity.value = 'danger';
-
             }
-            console.log()
-
         },
     });
 };

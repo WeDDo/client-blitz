@@ -6,7 +6,7 @@
         <div class="flex gap-2 justify-end">
             <Button
                 size="small"
-                :disabled="isNoFolders()"
+                :disabled="hasNoFolders()"
                 @click="handleCreate"
             >
                 <i class="pi pi-save"></i> {{ translate('global.save') }}
@@ -61,7 +61,7 @@ function goToIndex() {
     router.get(route('modules.email-inbox-settings.index'));
 }
 
-function isNoFolders() {
+function hasNoFolders() {
     return (
         Array.isArray(form.values.folders) &&
         form.values.folders.length === 2 &&
@@ -74,6 +74,13 @@ async function fetchData() {
         imap_email_setting_id: form.values.imap_email_setting_id,
     }, {
         preserveState: true,
+        onSuccess: (response) => {
+            if (response.props.flash.success) {
+                form.setFieldValue('folders', response.props.data.folders);
+            } else {
+                form.setFieldValue('folders', [[], []]);
+            }
+        },
     });
 }
 

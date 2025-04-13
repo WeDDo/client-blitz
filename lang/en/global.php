@@ -18,5 +18,7 @@ return [
 
     'check_connection' => 'Check connection',
 
+    'deleted_successfully' => 'Deleted successfully',
+
     'server_error' => 'Server error',
 ];

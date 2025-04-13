@@ -57,14 +57,22 @@ class EmailSettingController extends Controller
     public function destroy(): RedirectResponse
     {
         $this->emailSettingService->destroy();
-        return back()->with('success', 'Deleted successfully');
+        return back()->with('success', __('global.deleted_successfully'));
     }
 
     private function getOptions(): array
     {
         return [
-            'types' => collect(EmailSetting::getTypes())->map(fn($type) => ['id' => $type, 'name' => $type]),
-            'protocols' => collect(EmailSetting::getProtocols())->map(fn($protocol) => ['id' => $protocol, 'name' => $protocol]),
+            'types' => collect(EmailSetting::getTypes())
+                ->map(fn($type) => [
+                    'id' => $type,
+                    'name' => $type
+                ]),
+            'protocols' => collect(EmailSetting::getProtocols())
+                ->map(fn($protocol) => [
+                    'id' => $protocol,
+                    'name' => $protocol
+                ]),
         ];
     }
 
@@ -77,37 +85,4 @@ class EmailSettingController extends Controller
             return back()->with('error', 'Connection failed: ' . $e->getMessage());
         }
     }
-//    public function show(EmailSetting $emailSetting): JsonResponse
-//    {
-//        $emailSetting = $this->emailSettingService->show($emailSetting);
-//
-//        return response()->json([
-//            'item' => $emailSetting,
-//            'additional' => $emailSetting->getAdditionalData(),
-//        ]);
-//    }
-//
-//
-//    public function update(EmailSettingRequest $request, EmailSetting $emailSetting): JsonResponse
-//    {
-//        $this->emailSettingService->update($request->validated(), $emailSetting);
-//
-//        return response()->json([
-//            'item' => $emailSetting,
-//            'additional' => $emailSetting->getAdditionalData(),
-//        ]);
-//    }
-//
-
-//
-//    public function copy(EmailSetting $emailSetting): JsonResponse
-//    {
-//        $emailSettingCopy = $this->emailSettingService->copy($emailSetting);
-//
-//        return response()->json([
-//            'item' => $emailSettingCopy,
-//            'additional' => $emailSettingCopy->getAdditionalData(),
-//        ]);
-//    }
-//
 }
