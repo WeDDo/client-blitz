@@ -27,6 +27,7 @@
 import {router} from "@inertiajs/vue3";
 import {usePage} from "@inertiajs/vue3";
 import {useForm} from "vee-validate";
+import {watch} from "vue";
 import {ref} from "vue";
 import {route} from "ziggy-js";
 import MainForm from "../../../../components/modules/email-inbox-settings/import/MainForm.vue";
@@ -67,4 +68,16 @@ function isNoFolders() {
         form.values.folders.every(item => Array.isArray(item) && item.length === 0)
     );
 }
+
+async function fetchData() {
+    router.get(route('modules.email-inbox-settings.import.index'), {
+        imap_email_setting_id: form.values.imap_email_setting_id,
+    }, {
+        preserveState: true,
+    });
+}
+
+watch(() => form.values.imap_email_setting_id, () => {
+    fetchData();
+});
 </script>

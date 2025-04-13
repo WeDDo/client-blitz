@@ -72,13 +72,14 @@ class EmailSettingService
         return true;
     }
 
-    public function checkImapConnection(EmailSetting $emailSetting): void
+    public function checkImapConnection(EmailSetting $emailSetting): \Webklex\PHPIMAP\Client
     {
         try {
             $client = Client::make($this->setImapEmailConfig($emailSetting));
             $client->connect();
+
+            return $client;
         } catch (Throwable $e) {
-            dd($e);
             throw new \Exception('Imap check failed', 400);
         }
     }

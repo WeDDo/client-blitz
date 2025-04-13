@@ -69,17 +69,21 @@ class EmailInboxSettingController extends Controller
         ];
     }
 
-    public function importIndex(): Response
+    public function importIndex(): Response|RedirectResponse
     {
-        return inertia('modules/email-inbox-settings/import/index', [
-            'data' => $this->emailInboxSettingService->getInboxesImap(),
-            'options' => auth()->user()->imapEmailSettings,
-        ]);
+        try {
+            return inertia('modules/email-inbox-settings/import/index', [
+                'data' => $this->emailInboxSettingService->importIndex(),
+                'options' => auth()->user()->imapEmailSettings,
+            ]);
+        } catch (\Throwable $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function importStore(): RedirectResponse
     {
-        $this->emailInboxSettingService->createInboxes(request()->all());
+        $this->emailInboxSettingService->importStore(request()->all());
 
         return redirect()->route('modules.email-inbox-settings.index');
     }

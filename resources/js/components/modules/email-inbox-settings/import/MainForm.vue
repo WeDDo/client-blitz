@@ -19,7 +19,7 @@ const [imapEmailSettingId] = form.value.defineField('imap_email_setting_id');
                 <MainSelect
                     v-model:value="imapEmailSettingId"
                     name="imap_email_setting_id"
-                    :label="translate('modules.emailSetting.imap_email_setting_id')"
+                    :label="translate('modules.emailInboxSetting.import.imap_email_setting_id')"
                     required
                     :errors="form.errors"
                     :options="page.props.options"
@@ -32,10 +32,10 @@ const [imapEmailSettingId] = form.value.defineField('imap_email_setting_id');
                         breakpoint="1400px"
                     >
                         <template #sourceheader>
-                            Available
+                            {{ translate('global.available') }}
                         </template>
                         <template #targetheader>
-                            Selected
+                            {{ translate('global.selected') }}
                         </template>
                         <template #item="slotProps">
                             <div>

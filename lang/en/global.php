@@ -13,6 +13,9 @@ return [
     'save' => 'Save',
     'update' => 'Update',
 
+    'available' => 'Available',
+    'selected' => 'Selected',
+
     'check_connection' => 'Check connection',
 
     'server_error' => 'Server error',

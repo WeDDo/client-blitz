@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\EmailInboxSetting;
+use App\Models\EmailSetting;
 use Illuminate\Support\Facades\DB;
 use Webklex\IMAP\Facades\Client;
 use Webklex\PHPIMAP\Support\FolderCollection;
@@ -24,29 +25,31 @@ class EmailInboxSettingService
         $emailInboxSetting->delete();
     }
 
-    public function getInboxesImap(): array
+    public function importIndex(): array
     {
-        $initialImapEmailSetting = auth()->user()->imapEmailSettings()->first();
+        if (request('imap_email_setting_id')) {
+            $initialImapEmailSetting = EmailSetting::query()
+                ->where('protocol', EmailSetting::$imapProtocol)
+                ->where('id', request('imap_email_setting_id'))
+                ->first();
+        } else {
+            $initialImapEmailSetting = auth()->user()
+                ->imapEmailSettings()
+                ->first();
+        }
+
         if (!$initialImapEmailSetting) {
             return [[], []];
         }
 
-        $imapConfig = (new EmailSettingService())->setImapEmailConfig($initialImapEmailSetting);
-
-        $client = Client::make($imapConfig);
-        $client->connect();
-
+        $client = (new EmailSettingService())->checkImapConnection($initialImapEmailSetting);
         $folderNames = $this->extractMailboxNames($client->getFolders());
-
         $formattedFolders = [
             [],
             [],
         ];
 
         $emailInboxSettingNames = auth()->user()->emailInboxSettings()->pluck('read_from_inbox_name');
-
-//        dd($emailInboxSettingNames);
-
         foreach ($folderNames as $key => $folderName) {
             if (!$emailInboxSettingNames->contains($folderName)) {
                 $formattedFolders[0][] = [
@@ -60,6 +63,19 @@ class EmailInboxSettingService
             'imap_email_setting_id' => $initialImapEmailSetting?->id,
             'folders' => $formattedFolders,
         ];
+    }
+
+    public function importStore(array $data): void
+    {
+        DB::transaction(function () use ($data) {
+            foreach ($data['folders'][1] as $inbox) {
+                $this->store([
+                    'name' => $inbox['name'],
+                    'read_from_inbox_name' => $inbox['name'],
+                    'email_setting_id' => $data['imap_email_setting_id'],
+                ]);
+            }
+        });
     }
 
     protected function extractMailboxNames(FolderCollection $folders): array
@@ -77,19 +93,6 @@ class EmailInboxSettingService
         }
 
         return $mailboxNames;
-    }
-
-    public function createInboxes(array $data): void
-    {
-        DB::transaction(function () use ($data) {
-            foreach ($data['folders'][1] as $inbox) {
-                $this->store([
-                    'name' => $inbox['name'],
-                    'read_from_inbox_name' => $inbox['name'],
-                    'email_setting_id' => $data['imap_email_setting_id'],
-                ]);
-            }
-        });
     }
 }
 
