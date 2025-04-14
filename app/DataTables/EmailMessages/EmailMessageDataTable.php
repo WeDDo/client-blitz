@@ -23,7 +23,7 @@ class EmailMessageDataTable extends BaseDataTable
         session([$sessionKey => $page]);
 
         return EmailMessage::query()
-            ->orderBy('created_at', 'desc')
+            ->orderBy('date', 'desc')
             ->paginate($this->perPage, page: $page);
     }
 }

@@ -30,7 +30,7 @@ const activePanels = ref(props.conversation.map((_, index) => index));
                     <div><strong>To:</strong> {{ email.to }}</div>
                     <div><strong>Date:</strong> {{ email.date }}</div>
 
-                    <div><strong>HTML Body:</strong></div>
+                    <div><strong>Body:</strong></div>
                     <div v-html="email.body_html"></div>
                 </div>
             </AccordionContent>
