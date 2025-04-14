@@ -24,13 +24,16 @@ class EmailMessageService
 //        $this->attachmentService = new AttachmentService();
         $this->emailSettingService = new EmailSettingService();
     }
+
 //
-//    public function show(EmailMessage $emailMessage): EmailMessage
-//    {
-//        $this->markThreadAsSeen($emailMessage);
-//
-//        return $emailMessage;
-//    }
+    public function show(EmailMessage $emailMessage): EmailMessage
+    {
+        $this->markThreadAsSeen($emailMessage);
+
+//        $emailMessage->withAdditionalData();
+
+        return $emailMessage;
+    }
 //
 //    public function getAdditionalData(): array
 //    {
@@ -72,7 +75,9 @@ class EmailMessageService
         return DB::transaction(function () {
             $imapConfig = $this->emailSettingService->setImapEmailConfig();
 
-            $emailInboxSettings = EmailInboxSetting::where('created_by', auth()->id())->get();
+            $emailInboxSettings = EmailInboxSetting::query()
+                ->where('created_by', auth()->id())
+                ->get();
             $allMessages = collect();
 
             foreach ($emailInboxSettings as $inboxSetting) {
@@ -129,28 +134,23 @@ class EmailMessageService
                     $decodedSubject .= $part->text;
                 }
                 $subject = $decodedSubject;
+                $emailExtractor = function ($addressList) {
+                    return collect($addressList ?? [])
+                        ->map(function ($address) {
+                            return $address->mail ?? null;
+                        })
+                        ->filter()
+                        ->implode(',');
+                };
 
-//                $purifierConfig = HTMLPurifier_Config::createDefault();
-//                $purifier = new HTMLPurifier($purifierConfig);
-//                $bodyHtml = $purifier->purify($message->getHTMLBody());
+                $fromEmails = $emailExtractor($message->getFrom()?->toArray());
+                $toEmails = $emailExtractor($message->getTo()?->toArray());
+                $ccEmails = $emailExtractor($message->getCc()?->toArray());
+                $bccEmails = $emailExtractor($message->getBcc()?->toArray());
+                $bccEmails = $emailExtractor($message->getBcc()?->toArray());
+                $replyToEmails = $emailExtractor($message->getReplyTo()?->toArray());
 
-//                $fromEmails = collect($message->getFrom()?->get())->map(fn($fromEmailObject) => $fromEmailObject->mail);
-//                $toEmails = collect($message->getTo()?->get())->map(fn($toEmailObject) => $toEmailObject->mail);
-//                $ccEmails = collect($message->getCc()?->get())->map(fn($ccEmailObject) => $ccEmailObject->mail);
-//                $bccEmails = collect($message->getBcc()?->get())->map(fn($bccEmailObject) => $bccEmailObject->mail);
-//                $replyToEmails = collect($message->getReplyTo()?->get())->map(fn($replyToEmailObject) => $replyToEmailObject->mail);
-
-                $emailExtractor = fn($list) => collect($list ?? [])
-                    ->map(fn($item) => is_object($item) && property_exists($item, 'mail') ? $item->mail : $item)
-                    ->filter();
-
-                $fromEmails     = $emailExtractor($message->getFrom()?->get());
-                $toEmails       = $emailExtractor($message->getTo()?->get());
-                $ccEmails       = $emailExtractor($message->getCc()?->get());
-                $bccEmails      = $emailExtractor($message->getBcc()?->get());
-                $replyToEmails  = $emailExtractor($message->getReplyTo()?->get());
-
-                $inReplyTo = $message->getInReplyTo()?->get()[0] ?? null;
+                $inReplyTo = $message->getInReplyTo();
                 $inReplyTo = $inReplyTo ? trim($inReplyTo, '<>') : null;
 
                 $replyToEmailMessage = null;
@@ -164,11 +164,11 @@ class EmailMessageService
                     ->create([
                         'message_id' => $messageId,
                         'subject' => $subject,
-                        'from' => $fromEmails->count() > 0 ? $fromEmails->join(',') : null,
-                        'to' => $toEmails->count() > 0 ? $toEmails->join(',') : null,
-                        'cc' => $ccEmails->count() > 0 ? $ccEmails->join(',') : null,
-                        'bcc' => $bccEmails->count() > 0 ? $bccEmails->join(',') : null,
-                        'reply_to' => $replyToEmails->count() > 0 ? $replyToEmails->join(',') : null,
+                        'from' => $fromEmails ?: null,
+                        'to' => $toEmails ?: null,
+                        'cc' => $ccEmails ?: null,
+                        'bcc' => $bccEmails ?: null,
+                        'reply_to' => $replyToEmails ?: null,
                         'date' => $message->getDate()?->get()?->toDateTimeString() ?? null,
                         'body_text' => $message->getTextBody() ?? null,
                         'body_html' => $message->getHTMLBody(),
@@ -195,11 +195,13 @@ class EmailMessageService
         }
 
         foreach ($messages as $message) {
-            $messageId = $message->getMessageId()->get()[0];
-            $inReplyTo = $message->getInReplyTo()?->get()[0] ?? null;
+            $messageId = $message->getMessageId()?->get();
+            $messageId = $messageId ? trim($messageId, '<>') : null;
+
+            $inReplyTo = $message->getInReplyTo();
             $inReplyTo = $inReplyTo ? trim($inReplyTo, '<>') : null;
 
-            if ($inReplyTo && isset($emailMessageMap[$inReplyTo]) && isset($emailMessageMap[$messageId])) {
+            if ($messageId && $inReplyTo && isset($emailMessageMap[$inReplyTo]) && isset($emailMessageMap[$messageId])) {
                 $emailMessageMap[$messageId]->update([
                     'reply_to_email_message_id' => $emailMessageMap[$inReplyTo]->id,
                 ]);

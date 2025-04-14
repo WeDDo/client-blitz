@@ -41,6 +41,16 @@ class EmailMessage extends Model
         ];
     }
 
+    public function withAdditionalData(): self
+    {
+
+        $this->additional_data = [
+            'conversation' => $this->getEmailConversation(),
+        ];
+
+        return $this;
+    }
+
     /**
      * Get all replied-to email-messages in the conversation.
      *
@@ -63,7 +73,7 @@ class EmailMessage extends Model
      */
     private function collectEmailThread(EmailMessage $emailMessage, array &$conversation): void
     {
-        $emailMessage->load('attachments');
+//        $emailMessage->load('attachments');
         $conversation[] = $emailMessage;
 
         if ($emailMessage->replyToEmailMessage) {

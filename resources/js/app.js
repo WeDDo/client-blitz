@@ -1,8 +1,12 @@
 import './bootstrap';
 import '../css/app.css';
-// import {Form} from "@primevue/forms";
+
 import {definePreset} from "@primevue/themes";
 import {createPinia} from "pinia";
+import {AccordionContent} from "primevue";
+import {AccordionHeader} from "primevue";
+import {AccordionPanel} from "primevue";
+import {Accordion} from "primevue";
 import {ConfirmationService} from "primevue";
 import {ConfirmPopup} from "primevue";
 import {PickList} from "primevue";
@@ -158,6 +162,10 @@ createInertiaApp({
             .component('Column', Column)
             .component('PickList', PickList)
             .component('ConfirmPopup', ConfirmPopup)
+            .component('Accordion', Accordion)
+            .component('AccordionPanel', AccordionPanel)
+            .component('AccordionHeader', AccordionHeader)
+            .component('AccordionContent', AccordionContent)
             .directive('tooltip', Tooltip)
             .directive('ripple', Ripple)
             .mount(el)
