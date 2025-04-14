@@ -134,17 +134,6 @@ class EmailMessageService
                     $decodedSubject .= $part->text;
                 }
                 $subject = $decodedSubject;
-
-//                $purifierConfig = HTMLPurifier_Config::createDefault();
-//                $purifier = new HTMLPurifier($purifierConfig);
-//                $bodyHtml = $purifier->purify($message->getHTMLBody());
-
-//                $fromEmails = collect($message->getFrom()?->get())->map(fn($fromEmailObject) => $fromEmailObject->mail);
-//                $toEmails = collect($message->getTo()?->get())->map(fn($toEmailObject) => $toEmailObject->mail);
-//                $ccEmails = collect($message->getCc()?->get())->map(fn($ccEmailObject) => $ccEmailObject->mail);
-//                $bccEmails = collect($message->getBcc()?->get())->map(fn($bccEmailObject) => $bccEmailObject->mail);
-//                $replyToEmails = collect($message->getReplyTo()?->get())->map(fn($replyToEmailObject) => $replyToEmailObject->mail);
-
                 $emailExtractor = function ($addressList) {
                     return collect($addressList ?? [])
                         ->map(function ($address) {
