@@ -37,6 +37,7 @@ const value = defineModel('value');
                 type="text"
                 fluid
                 :invalid="!!props.errors?.value?.[props.name]"
+                :disabled="props.disabled"
             />
         <Message
             v-if="props.errors?.value?.[props.name]"

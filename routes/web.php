@@ -91,6 +91,11 @@ Route::middleware('auth.check')->group(function () {
 
         Route::get('get-emails-using-imap', [EmailMessageController::class, 'getEmailsUsingImap'])
             ->name('modules.email-messages.get-emails-using-imap');
+
+        Route::prefix('{emailMessage}')->group(function () {
+            Route::get('', [EmailMessageController::class, 'show'])
+                ->name('modules.email-messages.show');
+        });
     });
 });
 //Route::get('files', [FileController::class, 'index'])

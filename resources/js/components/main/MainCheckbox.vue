@@ -36,6 +36,7 @@ const value = defineModel('value');
             :name="props.name"
             :required="required"
             :invalid="!!props.errors?.value?.[props.name]"
+            :disabled="props.disabled"
             binary
         >
         </Checkbox>
